@@ -24,14 +24,16 @@ void main()
 	
 	vec4 vTexColor = vec4(0.0);
 	
-	float fScale = vWorldPos.y/fRenderHeight;
+	float fScale = vWorldPos.y/fRenderHeight; // y/15
 
 	const float fRange1 = 0.15f;
 	const float fRange2 = 0.3f;
 	const float fRange3 = 0.65f;
 	const float fRange4 = 0.85f;
 
-	if(fScale >= 0.0 && fScale <= fRange1)vTexColor = texture(gSampler[0], vTexCoord);
+	if(fScale >= 0.0 && fScale <= fRange1){
+        vTexColor = texture(gSampler[0], vTexCoord); // fungus
+    }
 	else if(fScale <= fRange2)
 	{
 		fScale -= fRange1;
@@ -40,10 +42,12 @@ void main()
 		float fScale2 = fScale;
 		fScale = 1.0-fScale; 
 		
-		vTexColor += texture(gSampler[0], vTexCoord)*fScale;
-		vTexColor += texture(gSampler[1], vTexCoord)*fScale2;
+		vTexColor += texture(gSampler[0], vTexCoord)*fScale; // fungus
+		vTexColor += texture(gSampler[1], vTexCoord)*fScale2; // sandgrass
 	}
-	else if(fScale <= fRange3)vTexColor = texture(gSampler[1], vTexCoord);
+	else if(fScale <= fRange3){ 
+        vTexColor = texture(gSampler[1], vTexCoord); // sandgrass
+    }
 	else if(fScale <= fRange4)
 	{
 		fScale -= fRange3;
@@ -52,16 +56,16 @@ void main()
 		float fScale2 = fScale;
 		fScale = 1.0-fScale; 
 		
-		vTexColor += texture(gSampler[1], vTexCoord)*fScale;
-		vTexColor += texture(gSampler[2], vTexCoord)*fScale2;		
+		vTexColor += texture(gSampler[1], vTexCoord)*fScale; // sandgrass
+		vTexColor += texture(gSampler[2], vTexCoord)*fScale2; // rock
 	}
-	else vTexColor = texture(gSampler[2], vTexCoord);
+	else vTexColor = texture(gSampler[2], vTexCoord); // rock
 
 	vec2 vPathCoord = vec2(vTexCoord.x/fMaxTextureU, vTexCoord.y/fMaxTextureV);
 	vec4 vPathIntensity = texture(gSampler[4], vPathCoord);
 	fScale = vPathIntensity.x;
   
-	vec4 vPathColor = texture(gSampler[3], vTexCoord); // Black color means there is a path
+	vec4 vPathColor = texture(gSampler[3], vTexCoord); // Black color means there is a path, sand
 	vec4 vFinalTexColor = fScale*vTexColor+(1-fScale)*vPathColor;
 
 	vec4 vMixedColor = vFinalTexColor*vColor;

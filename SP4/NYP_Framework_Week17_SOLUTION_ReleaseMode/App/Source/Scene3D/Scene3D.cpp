@@ -196,7 +196,7 @@ bool CScene3D::Init(void)
 	cTerrain->SetShader("Shader3D_Terrain");
 	cTerrain->Init();
 	// Set the size of the Terrain
-	cTerrain->SetRenderSize(200.0f, 15.0f, 200.0f);
+	cTerrain->SetRenderSize(100.0f, 15.0f, 100.0f);
 
 	// Load the movable Entities
 	// Initialise the CSolidObjectManager
@@ -207,7 +207,7 @@ bool CScene3D::Init(void)
 	cPlayer3D = CPlayer3D::GetInstance();
 	//cPlayer3D->SetPosition(glm::vec3(-28.f, cTerrain->GetHeight(-28, 16.1f), 16.1f));
 	//5.81f, 28.97f
-	cPlayer3D->SetPosition(glm::vec3(7.f, cTerrain->GetHeight(7.f, 30.f), 30.f));
+	cPlayer3D->SetPosition(glm::vec3(6.23f, cTerrain->GetHeight(6.23f, 7.8f), 7.8f));
 	cPlayer3D->SetMovementSpeed(5.f);
 	cPlayer3D->SetShader("Shader3D");
 	cPlayer3D->Init();
@@ -306,39 +306,147 @@ bool CScene3D::Init(void)
 	cSolidObjectManager->Add(cFlyingObs);
 	obstacleList.push_back(cFlyingObs);
 
+	SpawnTower();
+	// Load the GUI Entities
+	// Store the cGUI_Scene3D singleton instance here
+	cGUI_Scene3D = CGUI_Scene3D::GetInstance();
+	cGUI_Scene3D->Init();
 
-	//CEnemy3D* cEnemy3D = new CEnemy3D(glm::vec3(0.0f, fCheckHeight, -10.0f));
-	//cEnemy3D->SetShader("Shader3D");
-	//cEnemy3D->Init();
-	//cEnemy3D->InitCollider("Shader3D_Line", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	////cEnemy3D->SetScale(glm::vec3(0.5f));
+	// Load the non-movable Entities with no collisions
+	// Initialise the CEntityManager
+	cEntityManager = CEntityManager::GetInstance();
+	cEntityManager->Init();
 
-	//// Assign a cPistol to the cEnemy3D
-	//CPistol* cEnemyPistol = new CPistol();
-	//// Set the position, rotation and scale of this weapon
-	////cEnemyPistol->SetPosition(glm::vec3(0.05f, -0.075f, 0.5f));
-	////cEnemyPistol->SetRotation(3.14159f, glm::vec3(0.0f, 1.0f, 0.0f));
-	//cEnemyPistol->SetScale(glm::vec3(1.75f, 1.75f, 1.75f));
-	//// Initialise the instance
-	//cEnemyPistol->Init();
-	//cEnemyPistol->SetShader("Shader3D_Model");
-	//cEnemy3D->SetWeapon(0, cEnemyPistol);
+	// Initialise the CRock3D
+	//CRock3D* cRock3D = new CRock3D();
+	//cRock3D->SetInstancingMode(false);
 
-	//// Add the cEnemy3D to the cSolidObjectManager
-	//cSolidObjectManager->Add(cEnemy3D);
+	//if (cRock3D->IsInstancedRendering() == true)
+	//{
+	//	cRock3D->SetScale(glm::vec3(5.0f));
+	//	cRock3D->SetNumOfInstance(1000);
+	//	cRock3D->SetSpreadDistance(100.0f);
 
-	//// Initialise a CStructure3D
-	//fCheckHeight = cTerrain->GetHeight(2.0f, -2.0f);
-	//CStructure3D* cStructure3D = new CStructure3D(glm::vec3(2.0f, fCheckHeight, -2.0f));
-	//cStructure3D->SetShader("Shader3D");
-	//cStructure3D->Init();
-	//cStructure3D->InitCollider("Shader3D_Line", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	////cStructure3D->SetScale(glm::vec3(0.5f));
+	//	cRock3D->SetShader("Shader3D_Instancing");	// FOR INSTANCED RENDERING
+	//}
+	//else
+	//{
+	//	fCheckHeight = cTerrain->GetHeight(2.0f, 2.0f);
+	//	cRock3D->SetPosition(glm::vec3(2.0f, fCheckHeight, 2.0f));
+	//	cRock3D->SetScale(glm::vec3(0.5f));
+	//	cRock3D->SetShader("Shader3DNoColour");			// FOR NORMAL RENDERING
+	//}
+	//if (cRock3D->Init() == true)
+	//{
+	//	cEntityManager->Add(cRock3D);
+	//}
+	//else
+	//{
+	//	delete cRock3D;
+	//}
 
-	//// Add the cStructure3D to the cSolidObjectManager
-	//cSolidObjectManager->Add(cStructure3D);
+	// Initialise the CTreeKabak3D
+	//CTreeKabak3D* cTreeKabak3D = new CTreeKabak3D(glm::vec3(25.0f, 0.0f, -5.0f));
+	//cTreeKabak3D->SetInstancingMode(true);
+	//if (cTreeKabak3D->IsInstancedRendering() == true)
+	//{
+	//	cTreeKabak3D->SetScale(glm::vec3(15.f));
+	//	cTreeKabak3D->SetNumOfInstance(400);
+	//	cTreeKabak3D->SetSpreadDistance(50.0f);
 
-	fCheckHeight = cTerrain->GetHeight(16.5f, 4.5f);
+	//	cTreeKabak3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+	//}
+	//if (cTreeKabak3D->Init() == true)
+	//{
+	//	cEntityManager->Add(cTreeKabak3D);
+	//}
+	//else
+	//{
+	//	delete cTreeKabak3D;
+	//}
+
+	//CTreeKabak3D* cTreeKabak3D2 = new CTreeKabak3D(glm::vec3(-28.0f, 0.0f, -20.0f));
+	//cTreeKabak3D2->SetInstancingMode(true);
+	//if (cTreeKabak3D2->IsInstancedRendering() == true)
+	//{
+	//	cTreeKabak3D2->SetScale(glm::vec3(15.f));
+	//	cTreeKabak3D2->SetNumOfInstance(400);
+	//	cTreeKabak3D2->SetSpreadDistance(50.0f);
+
+	//	cTreeKabak3D2->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+	//}
+	//if (cTreeKabak3D2->Init() == true)
+	//{
+	//	cEntityManager->Add(cTreeKabak3D2);
+	//}
+	//else
+	//{
+	//	delete cTreeKabak3D2;
+	//}
+
+	//CTreeKabak3D* cTreeKabak3D3 = new CTreeKabak3D(glm::vec3(12.0f, 0.0f, 60.0f));
+	//cTreeKabak3D3->SetInstancingMode(true);
+	//if (cTreeKabak3D3->IsInstancedRendering() == true)
+	//{
+	//	cTreeKabak3D3->SetScale(glm::vec3(15.f));
+	//	cTreeKabak3D3->SetNumOfInstance(400);
+	//	cTreeKabak3D3->SetSpreadDistance(50.0f);
+
+	//	cTreeKabak3D3->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+	//}
+	//if (cTreeKabak3D3->Init() == true)
+	//{
+	//	cEntityManager->Add(cTreeKabak3D3);
+	//}
+	//else
+	//{
+	//	delete cTreeKabak3D3;
+	//}
+
+	//CMossrock3D* cMossrock3D = new CMossrock3D(glm::vec3(0.0f, 0.0f, 0.0f));
+	//cMossrock3D->SetInstancingMode(true);
+	//if (cMossrock3D->IsInstancedRendering() == true)
+	//{
+	//	cMossrock3D->SetScale(glm::vec3(2.f));
+	//	cMossrock3D->SetNumOfInstance(1000);
+	//	cMossrock3D->SetSpreadDistance(100.0f);
+
+	//	cMossrock3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+	//}
+	//if (cMossrock3D->Init() == true)
+	//{
+	//	cEntityManager->Add(cMossrock3D);
+	//}
+	//else
+	//{
+	//	delete cMossrock3D;
+	//}
+
+	// Initialise a CSpinTower
+	//CSpinTower::Create();
+
+	//// Spawn Robot Code
+	//RobotNode* robot = new RobotNode();
+	//robot->SetPlayerHandle(cPlayer3D);
+	//cSolidObjectManager->Add(robot);
+
+	
+	// Initialise a CHut_Concrete
+	//fCheckHeight = cTerrain->GetHeight(-2.0f, 2.0f);
+	//CHut_Concrete* cHut_Concrete = new CHut_Concrete(glm::vec3(-2.0f, fCheckHeight, 2.0f));
+	//cHut_Concrete->SetShader("Shader3DNoColour");
+	//cHut_Concrete->SetLODStatus(true);
+	//cHut_Concrete->Init();
+	//cHut_Concrete->InitCollider("Shader3D_Line", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+	//// Add the cHut_Concrete to the cSolidObjectManager
+	//cSolidObjectManager->Add(cHut_Concrete);
+
+	return true;
+}
+
+void CScene3D::SpawnTower() {
+	float fCheckHeight = cTerrain->GetHeight(16.5f, 4.5f);
 	// Position for the Target Tower
 	CStructure3D* targetShootingPoint = new CStructure3D(glm::vec3(16.5f, fCheckHeight - 0.5f, 4.5f));
 	targetShootingPoint->SetScale(glm::vec3(0.2f, 0.2f, 0.2f));
@@ -380,152 +488,6 @@ bool CScene3D::Init(void)
 	// Add the cStructure3D to the cSolidObjectManager
 	cSolidObjectManager->Add(targetShootingPoint);
 	cTriggerPointsList.push_back(targetShootingPoint);
-
-	
-	/*float firstPlatformY = cTerrain->GetHeight(-25.3f, 20.f);
-	Platform3D* platform = new Platform3D(glm::vec3(-25.3f, firstPlatformY, 23.2f));
-	platform->SetScale(glm::vec3(3.f, 1.f, 1.f));
-	platform->SetShader("Shader3D_Model");
-	platform->Init();
-	platform->InitCollider("Shader3D_Line", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	cSolidObjectManager->Add(platform);
-	adjustObj3D = platform;*/
-	// Load the GUI Entities
-	// Store the cGUI_Scene3D singleton instance here
-	cGUI_Scene3D = CGUI_Scene3D::GetInstance();
-	cGUI_Scene3D->Init();
-
-	// Load the non-movable Entities with no collisions
-	// Initialise the CEntityManager
-	cEntityManager = CEntityManager::GetInstance();
-	cEntityManager->Init();
-
-	// Initialise the CRock3D
-	CRock3D* cRock3D = new CRock3D();
-	cRock3D->SetInstancingMode(false);
-
-	if (cRock3D->IsInstancedRendering() == true)
-	{
-		cRock3D->SetScale(glm::vec3(5.0f));
-		cRock3D->SetNumOfInstance(1000);
-		cRock3D->SetSpreadDistance(100.0f);
-
-		cRock3D->SetShader("Shader3D_Instancing");	// FOR INSTANCED RENDERING
-	}
-	else
-	{
-		fCheckHeight = cTerrain->GetHeight(2.0f, 2.0f);
-		cRock3D->SetPosition(glm::vec3(2.0f, fCheckHeight, 2.0f));
-		cRock3D->SetScale(glm::vec3(0.5f));
-		cRock3D->SetShader("Shader3DNoColour");			// FOR NORMAL RENDERING
-	}
-	if (cRock3D->Init() == true)
-	{
-		cEntityManager->Add(cRock3D);
-	}
-	else
-	{
-		delete cRock3D;
-	}
-
-	// Initialise the CTreeKabak3D
-	CTreeKabak3D* cTreeKabak3D = new CTreeKabak3D(glm::vec3(25.0f, 0.0f, -5.0f));
-	cTreeKabak3D->SetInstancingMode(true);
-	if (cTreeKabak3D->IsInstancedRendering() == true)
-	{
-		cTreeKabak3D->SetScale(glm::vec3(15.f));
-		cTreeKabak3D->SetNumOfInstance(400);
-		cTreeKabak3D->SetSpreadDistance(50.0f);
-
-		cTreeKabak3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
-	}
-	if (cTreeKabak3D->Init() == true)
-	{
-		cEntityManager->Add(cTreeKabak3D);
-	}
-	else
-	{
-		delete cTreeKabak3D;
-	}
-
-	CTreeKabak3D* cTreeKabak3D2 = new CTreeKabak3D(glm::vec3(-28.0f, 0.0f, -20.0f));
-	cTreeKabak3D2->SetInstancingMode(true);
-	if (cTreeKabak3D2->IsInstancedRendering() == true)
-	{
-		cTreeKabak3D2->SetScale(glm::vec3(15.f));
-		cTreeKabak3D2->SetNumOfInstance(400);
-		cTreeKabak3D2->SetSpreadDistance(50.0f);
-
-		cTreeKabak3D2->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
-	}
-	if (cTreeKabak3D2->Init() == true)
-	{
-		cEntityManager->Add(cTreeKabak3D2);
-	}
-	else
-	{
-		delete cTreeKabak3D2;
-	}
-
-	CTreeKabak3D* cTreeKabak3D3 = new CTreeKabak3D(glm::vec3(12.0f, 0.0f, 60.0f));
-	cTreeKabak3D3->SetInstancingMode(true);
-	if (cTreeKabak3D3->IsInstancedRendering() == true)
-	{
-		cTreeKabak3D3->SetScale(glm::vec3(15.f));
-		cTreeKabak3D3->SetNumOfInstance(400);
-		cTreeKabak3D3->SetSpreadDistance(50.0f);
-
-		cTreeKabak3D3->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
-	}
-	if (cTreeKabak3D3->Init() == true)
-	{
-		cEntityManager->Add(cTreeKabak3D3);
-	}
-	else
-	{
-		delete cTreeKabak3D3;
-	}
-
-	CMossrock3D* cMossrock3D = new CMossrock3D(glm::vec3(0.0f, 0.0f, 0.0f));
-	cMossrock3D->SetInstancingMode(true);
-	if (cMossrock3D->IsInstancedRendering() == true)
-	{
-		cMossrock3D->SetScale(glm::vec3(2.f));
-		cMossrock3D->SetNumOfInstance(1000);
-		cMossrock3D->SetSpreadDistance(100.0f);
-
-		cMossrock3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
-	}
-	if (cMossrock3D->Init() == true)
-	{
-		cEntityManager->Add(cMossrock3D);
-	}
-	else
-	{
-		delete cMossrock3D;
-	}
-
-	// Initialise a CSpinTower
-	//CSpinTower::Create();
-
-	//// Spawn Robot Code
-	//RobotNode* robot = new RobotNode();
-	//robot->SetPlayerHandle(cPlayer3D);
-	//cSolidObjectManager->Add(robot);
-
-	
-	// Initialise a CHut_Concrete
-	//fCheckHeight = cTerrain->GetHeight(-2.0f, 2.0f);
-	//CHut_Concrete* cHut_Concrete = new CHut_Concrete(glm::vec3(-2.0f, fCheckHeight, 2.0f));
-	//cHut_Concrete->SetShader("Shader3DNoColour");
-	//cHut_Concrete->SetLODStatus(true);
-	//cHut_Concrete->Init();
-	//cHut_Concrete->InitCollider("Shader3D_Line", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
-	//// Add the cHut_Concrete to the cSolidObjectManager
-	//cSolidObjectManager->Add(cHut_Concrete);
-
-	return true;
 }
 
 CFlyingObstacle* CScene3D::SpawnFlyingObstacle(glm::vec3 pos, CFlyingObstacle::PATROLMOVEMENT pm) {
@@ -662,17 +624,6 @@ bool CScene3D::Update(const double dElapsedTime)
 		if (glm::distance(cPlayer3D->GetPosition(), (*it)->GetPosition()) < 2.5f)
 		{
 			collidedEvent = (*it);
-			//if (collidedEvent->boxColour != glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)) {
-			//	collidedEvent->boxColour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-			//	collidedEvent->InitCollider("Shader3D_Line", collidedEvent->boxColour);
-			//	//
-			//}
-			//cout << "Within tower event trigger range" << endl;
-		}
-		else {
-			/*if (collidedEvent->boxColour == glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)) {
-				collidedEvent->InitCollider("Shader3D_Line", collidedEvent->boxColour);
-			}*/
 		}
 	}
 

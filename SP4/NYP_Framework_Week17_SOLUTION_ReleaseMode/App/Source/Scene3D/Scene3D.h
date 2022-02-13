@@ -79,6 +79,7 @@ public:
 	void SetCurrentMissionToSuccess();
 	CFlyingObstacle* SpawnFlyingObstacle(glm::vec3 pos, CFlyingObstacle::PATROLMOVEMENT pm);
 	void CScene3D::SpawnBoss();
+	void CScene3D::SpawnTower();
 protected:
 	// The handler to the CSettings
 	CSettings* cSettings;
