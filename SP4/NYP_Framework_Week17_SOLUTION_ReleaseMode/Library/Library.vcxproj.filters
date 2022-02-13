@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="TimeControl">
+      <UniqueIdentifier>{649fa1c7-6e4b-4924-97c6-6c75939a635f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignPatterns">
+      <UniqueIdentifier>{9bc4c3b9-1981-4e03-8c9e-89e745b4fbab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inputs">
+      <UniqueIdentifier>{2c337758-6015-4e6c-a5dd-ac69b0008729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderControl">
+      <UniqueIdentifier>{74a6ffcd-dfc4-48ab-add4-13c473ab0fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameControl">
+      <UniqueIdentifier>{d986e912-d139-488f-a5f7-67ad9758485b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{d352a9d2-8181-43bc-a208-075621bc19db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitives">
+      <UniqueIdentifier>{ccad508a-65f4-4d9c-832a-b4d2af7e5812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{c5d36a64-f753-4667-942a-1ea55042231d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\TimeControl\FPSCounter.cpp">
+      <Filter>TimeControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TimeControl\StopWatch.cpp">
+      <Filter>TimeControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Inputs\KeyboardController.cpp">
+      <Filter>Inputs</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Inputs\MouseController.cpp">
+      <Filter>Inputs</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RenderControl\TextRenderer.cpp">
+      <Filter>RenderControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameControl\Settings.cpp">
+      <Filter>GameControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\ImageLoader.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitives\Entity3D.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitives\Collider.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\LoadOBJ.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitives\LevelOfDetails.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\imgui.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\imgui_demo.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\imgui_draw.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\imgui_tables.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\imgui_widgets.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RenderControl\ShaderManager.cpp">
+      <Filter>RenderControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitives\Entity2D.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\CSVReader.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\CSVWriter.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\GUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitives\Mesh.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitives\MeshBuilder.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitives\SpriteAnimation.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\backends\imgui_impl_glfw.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GUI\backends\imgui_impl_opengl3.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Primitives\CollisionManager.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\TimeControl\FPSCounter.h">
+      <Filter>TimeControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TimeControl\StopWatch.h">
+      <Filter>TimeControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DesignPatterns\SingletonTemplate.h">
+      <Filter>DesignPatterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Inputs\KeyboardController.h">
+      <Filter>Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Inputs\MouseController.h">
+      <Filter>Inputs</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RenderControl\TextRenderer.h">
+      <Filter>RenderControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameControl\Settings.h">
+      <Filter>GameControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\filesystem.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ImageLoader.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitives\Entity3D.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitives\Collider.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\LoadOBJ.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitives\LevelOfDetails.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\imconfig.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\imgui.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\imgui_internal.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RenderControl\Shader.h">
+      <Filter>RenderControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RenderControl\ShaderManager.h">
+      <Filter>RenderControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitives\Entity2D.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\CSVReader.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\CSVWriter.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\GUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\rapidcsv.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitives\Mesh.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitives\MeshBuilder.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitives\SpriteAnimation.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\backends\imgui_impl_glfw.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GUI\backends\imgui_impl_opengl3.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Primitives\CollisionManager.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

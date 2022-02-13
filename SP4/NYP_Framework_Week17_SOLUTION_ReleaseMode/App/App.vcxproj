@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp" />
+    <ClCompile Include="Source\GameStateManagement\IntroState.cpp" />
+    <ClCompile Include="Source\GameStateManagement\MenuState.cpp" />
+    <ClCompile Include="Source\GameStateManagement\PauseState.cpp" />
+    <ClCompile Include="Source\GameStateManagement\Play3DGameState.cpp" />
+    <ClCompile Include="Source\GameStateManagement\PlayGameState.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Scene2D\BackgroundEntity.cpp" />
+    <ClCompile Include="Source\Scene2D\Enemy2D.cpp" />
+    <ClCompile Include="Source\Scene2D\GameManager.cpp" />
+    <ClCompile Include="Source\Scene2D\GUI_Scene2D.cpp" />
+    <ClCompile Include="Source\Scene2D\InventoryItem.cpp" />
+    <ClCompile Include="Source\Scene2D\InventoryManager.cpp" />
+    <ClCompile Include="Source\Scene2D\Map2D.cpp" />
+    <ClCompile Include="Source\Scene2D\Physics2D.cpp" />
+    <ClCompile Include="Source\Scene2D\Player2D.cpp" />
+    <ClCompile Include="Source\Scene2D\Scene2D.cpp" />
+    <ClCompile Include="Source\Scene3D\AI\FSM.cpp" />
+    <ClCompile Include="Source\Scene3D\Camera.cpp" />
+    <ClCompile Include="Source\Scene3D\CameraEffects\BloodScreen.cpp" />
+    <ClCompile Include="Source\Scene3D\CameraEffects\CameraEffects.cpp" />
+    <ClCompile Include="Source\Scene3D\CameraEffects\CameraEffectsManager.cpp" />
+    <ClCompile Include="Source\Scene3D\CameraEffects\CameraRecoil.cpp" />
+    <ClCompile Include="Source\Scene3D\CameraEffects\CameraShake.cpp" />
+    <ClCompile Include="Source\Scene3D\CameraEffects\CrossHair.cpp" />
+    <ClCompile Include="Source\Scene3D\CameraEffects\ScopeScreen.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\ArrowMapIndicator.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Enemy3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\EntityManager.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\FlyingObstacle.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Hut_Concrete.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Item3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Mossrock.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\PatrolEnemy.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Platform3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Player3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Rock3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\SolidObject.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\SolidObjectManager.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Structure3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Target3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Tree3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\TreeKabak3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\WoodenCrate3D.cpp" />
+    <ClCompile Include="Source\Scene3D\GUI_Scene3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Minimap\Minimap.cpp" />
+    <ClCompile Include="Source\Scene3D\Physics3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Scene3D.cpp" />
+    <ClCompile Include="Source\Scene3D\SceneGraph\RobotNode.cpp" />
+    <ClCompile Include="Source\Scene3D\SceneGraph\SceneGraph.cpp" />
+    <ClCompile Include="Source\Scene3D\SceneGraph\SceneNode.cpp" />
+    <ClCompile Include="Source\Scene3D\SceneGraph\SpinTower.cpp" />
+    <ClCompile Include="Source\Scene3D\SkyBox\SkyBox.cpp" />
+    <ClCompile Include="Source\Scene3D\Terrain\Terrain.cpp" />
+    <ClCompile Include="Source\Scene3D\Terrain\Texture.cpp" />
+    <ClCompile Include="Source\Scene3D\Terrain\vertexBufferObject.cpp" />
+    <ClCompile Include="Source\Scene3D\Waypoint\Waypoint.cpp" />
+    <ClCompile Include="Source\Scene3D\Waypoint\WaypointManager.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\Pistol.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\Projectile.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\ProjectileManager.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\Rifle.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\Sniper.cpp" />
+    <ClCompile Include="Source\Scene3D\WeaponInfo\WeaponInfo.cpp" />
+    <ClCompile Include="Source\SoundController\SoundController.cpp" />
+    <ClCompile Include="Source\SoundController\SoundInfo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\GameStateManagement\GameStateBase.h" />
+    <ClInclude Include="Source\GameStateManagement\GameStateManager.h" />
+    <ClInclude Include="Source\GameStateManagement\IntroState.h" />
+    <ClInclude Include="Source\GameStateManagement\MenuState.h" />
+    <ClInclude Include="Source\GameStateManagement\PauseState.h" />
+    <ClInclude Include="Source\GameStateManagement\Play3DGameState.h" />
+    <ClInclude Include="Source\GameStateManagement\PlayGameState.h" />
+    <ClInclude Include="Source\Scene2D\BackgroundEntity.h" />
+    <ClInclude Include="Source\Scene2D\Enemy2D.h" />
+    <ClInclude Include="Source\Scene2D\GameManager.h" />
+    <ClInclude Include="Source\Scene2D\GUI_Scene2D.h" />
+    <ClInclude Include="Source\Scene2D\InventoryItem.h" />
+    <ClInclude Include="Source\Scene2D\InventoryManager.h" />
+    <ClInclude Include="Source\Scene2D\Map2D.h" />
+    <ClInclude Include="Source\Scene2D\Physics2D.h" />
+    <ClInclude Include="Source\Scene2D\Player2D.h" />
+    <ClInclude Include="Source\Scene2D\Scene2D.h" />
+    <ClInclude Include="Source\Scene3D\AI\FSM.h" />
+    <ClInclude Include="Source\Scene3D\Camera.h" />
+    <ClInclude Include="Source\Scene3D\CameraEffects\BloodScreen.h" />
+    <ClInclude Include="Source\Scene3D\CameraEffects\CameraEffects.h" />
+    <ClInclude Include="Source\Scene3D\CameraEffects\CameraEffectsManager.h" />
+    <ClInclude Include="Source\Scene3D\CameraEffects\CameraRecoil.h" />
+    <ClInclude Include="Source\Scene3D\CameraEffects\CameraShake.h" />
+    <ClInclude Include="Source\Scene3D\CameraEffects\CrossHair.h" />
+    <ClInclude Include="Source\Scene3D\CameraEffects\ScopeScreen.h" />
+    <ClInclude Include="Source\Scene3D\Entities\ArrowMapIndicator.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Enemy3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\EntityManager.h" />
+    <ClInclude Include="Source\Scene3D\Entities\FlyingObstacle.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Hut_Concrete.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Item3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Mossrock.h" />
+    <ClInclude Include="Source\Scene3D\Entities\PatrolEnemy.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Platform3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Player3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Rock3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\SolidObject.h" />
+    <ClInclude Include="Source\Scene3D\Entities\SolidObjectManager.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Structure3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Target3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Tree3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\TreeKabak3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\WoodenCrate3D.h" />
+    <ClInclude Include="Source\Scene3D\GUI_Scene3D.h" />
+    <ClInclude Include="Source\Scene3D\Minimap\Minimap.h" />
+    <ClInclude Include="Source\Scene3D\Physics3D.h" />
+    <ClInclude Include="Source\Scene3D\Scene3D.h" />
+    <ClInclude Include="Source\Scene3D\SceneGraph\RobotNode.h" />
+    <ClInclude Include="Source\Scene3D\SceneGraph\SceneGraph.h" />
+    <ClInclude Include="Source\Scene3D\SceneGraph\SceneNode.h" />
+    <ClInclude Include="Source\Scene3D\SceneGraph\SpinTower.h" />
+    <ClInclude Include="Source\Scene3D\SkyBox\SkyBox.h" />
+    <ClInclude Include="Source\Scene3D\Terrain\Terrain.h" />
+    <ClInclude Include="Source\Scene3D\Terrain\Texture.h" />
+    <ClInclude Include="Source\Scene3D\Terrain\vertexBufferObject.h" />
+    <ClInclude Include="Source\Scene3D\Waypoint\Waypoint.h" />
+    <ClInclude Include="Source\Scene3D\Waypoint\WaypointManager.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\Pistol.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\Projectile.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\ProjectileManager.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\Rifle.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\Sniper.h" />
+    <ClInclude Include="Source\Scene3D\WeaponInfo\WeaponInfo.h" />
+    <ClInclude Include="Source\SoundController\SoundController.h" />
+    <ClInclude Include="Source\SoundController\SoundInfo.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\3DTree.fs" />
+    <None Include="Shader\3DTree.vs" />
+    <None Include="Shader\Ground.fs" />
+    <None Include="Shader\Ground.vs" />
+    <None Include="Shader\GUIShader.fs" />
+    <None Include="Shader\GUIShader.vs" />
+    <None Include="Shader\GUISimpleShader.fs" />
+    <None Include="Shader\GUISimpleShader.vs" />
+    <None Include="Shader\Instancing.fs" />
+    <None Include="Shader\Instancing.vs" />
+    <None Include="Shader\LineShader.fs" />
+    <None Include="Shader\LineShader.vs" />
+    <None Include="Shader\ModelShader.fs" />
+    <None Include="Shader\ModelShader.vs" />
+    <None Include="Shader\RenderToTexture.fs" />
+    <None Include="Shader\RenderToTexture.vs" />
+    <None Include="Shader\Scene2D.fs" />
+    <None Include="Shader\Scene2D.vs" />
+    <None Include="Shader\Scene2DColor.fs" />
+    <None Include="Shader\Scene2DColor.vs" />
+    <None Include="Shader\Scene3D.fs" />
+    <None Include="Shader\Scene3D.vs" />
+    <None Include="Shader\Scene3DWithLights.fs" />
+    <None Include="Shader\Scene3DWithLights.vs" />
+    <None Include="Shader\SkyBox.fs" />
+    <None Include="Shader\SkyBox.vs" />
+    <None Include="Shader\Terrain.fs" />
+    <None Include="Shader\Terrain.vs" />
+    <None Include="Shader\text.fs" />
+    <None Include="Shader\text.vs" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9B172635-4E2B-46F1-A403-08F4194D00F5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Base</RootNamespace>
+    <ProjectName>App</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_VARIADIC_MAX=10;WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)/Library/Source;$(SolutionDir)/glfw/include;$(SolutionDir)/glew/include;$(SolutionDir)/glm;$(SolutionDir)/irrKlang;$(SolutionDir)/FreeImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)/glfw/lib-vc2010-32;$(SolutionDir)/glew/lib;$(SolutionDir)/SOIL/lib;$(SolutionDir)/freetype/win32;$(SolutionDir)/irrKlang/lib;$(SolutionDir)/FreeImage;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>legacy_stdio_definitions.lib;Library.lib;winmm.lib;opengl32.lib;glu32.lib;glew32.lib;glfw3.lib;SOIL.lib;freetype.lib;irrKlang.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>_VARIADIC_MAX=10;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)/Library/Source;$(SolutionDir)/glfw/include;$(SolutionDir)/glew/include;$(SolutionDir)/glm;$(SolutionDir)/irrKlang;$(SolutionDir)/Lua/include;$(SolutionDir)/FreeImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)/glfw/lib-vc2010-32;$(SolutionDir)/glew/lib;$(SolutionDir)/SOIL/lib;$(SolutionDir)/freetype/win32;$(SolutionDir)/irrKlang/lib;$(SolutionDir)/Lua/lib;$(SolutionDir)/FreeImage;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>legacy_stdio_definitions.lib;Library.lib;winmm.lib;opengl32.lib;glu32.lib;glew32.lib;glfw3.lib;SOIL.lib;freetype.lib;irrKlang.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

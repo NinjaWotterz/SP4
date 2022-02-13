@@ -1,0 +1,7 @@
+newmtl kabak
+Ka 0.0000 0.0000 0.0000
+Kd 0.0000 0.0000 0.0000
+Ks 0.0000 0.0000 0.0000
+map_Kd texture\Kabak_Bark_and_Leaves_v1_D.png
+map_Ks texture\Kabak_Bark_and_Leaves_v1_S.png
+d 1.000
