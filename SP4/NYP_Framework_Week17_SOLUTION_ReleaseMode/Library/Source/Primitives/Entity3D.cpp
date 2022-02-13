@@ -231,6 +231,15 @@ void CEntity3D::RollbackPosition(void)
 	vec3Position = vec3PreviousPosition;
 }
 
+/**
+ @brief Rollback the position to the previous position
+ */
+void CEntity3D::RollbackPositionXZ(void)
+{
+	vec3Position.x = vec3PreviousPosition.x;
+	vec3Position.y = vec3PreviousPosition.y;
+}
+
 void CEntity3D::PrintSelf(void)
 {
 	cout << "Pos: (" << vec3Position.x << ", " << vec3Position.y << "," << vec3Position.z << ")" << endl;

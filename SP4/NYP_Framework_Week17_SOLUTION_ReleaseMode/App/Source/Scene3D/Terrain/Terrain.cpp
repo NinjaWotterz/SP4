@@ -48,8 +48,12 @@ bool CTerrain::Init(void)
 		return false;
 	
 	// Load greyscale image for the terrain
-	if (LoadHeightMapFromImage("Image/Terrain/World/terrain24.bmp") == false)
+	if (LoadHeightMapFromImage("Image/Terrain/World/terrain.bmp") == false)
 		return false;
+
+	//if (LoadGridMapFromImage("Image/Terrain/World/terrain_test1.bmp") == false) {
+
+	//}
 
 	return true;
 }

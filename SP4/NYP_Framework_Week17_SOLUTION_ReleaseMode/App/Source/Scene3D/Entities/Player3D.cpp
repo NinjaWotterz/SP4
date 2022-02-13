@@ -444,7 +444,11 @@ void CPlayer3D::ProcessMovement(const PLAYERMOVEMENT direction, const float delt
 	if (direction == PLAYERMOVEMENT::RIGHT)
 		vec3Position += right * velocity;
 
-	cout << "Player is moving" << endl;
+	//float newHeight = cTerrain->GetHeight(vec3Position.x, vec3Position.z) + fHeightOffset;
+	//if (newHeight >= 11.f) {
+	//	RollbackPositionXZ();
+	//}
+	//cout << "Player is moving" << endl;
 
 }
 
@@ -632,6 +636,7 @@ void CPlayer3D::UpdatePlayerVectors(void)
 void CPlayer3D::Constraint(void)
 {
 	// If the player is not jumping nor falling, then we snap his position to the terrain
+	//cout << "terrain height:" << cTerrain->GetHeight(vec3Position.x, vec3Position.z) + fHeightOffset << endl;
 	if (cPhysics3D.GetStatus() == CPhysics3D::STATUS::IDLE)
 	{
 		vec3Position.y = cTerrain->GetHeight(vec3Position.x, vec3Position.z) + fHeightOffset;
@@ -641,7 +646,7 @@ void CPlayer3D::Constraint(void)
 		// If the player is jumping nor falling, then we only snap his position 
 		// if the player's y-coordinate is below the cTerrain 
 		float fCheckHeight = cTerrain->GetHeight(vec3Position.x, vec3Position.z) + fHeightOffset;
-
+		
 		// If the player is below the terrain, then snap to the terrain height
 		if (fCheckHeight > vec3Position.y)
 			vec3Position.y = fCheckHeight;

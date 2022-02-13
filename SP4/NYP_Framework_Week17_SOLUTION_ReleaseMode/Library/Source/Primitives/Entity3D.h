@@ -97,7 +97,7 @@ public:
 	virtual void StorePositionForRollback(void);
 	// Rollback the position to the previous position
 	virtual void RollbackPosition(void);
-
+	virtual void RollbackPositionXZ(void);
 	// Update this class instance
 	virtual bool Update(const double dElapsedTime) = 0;
 
