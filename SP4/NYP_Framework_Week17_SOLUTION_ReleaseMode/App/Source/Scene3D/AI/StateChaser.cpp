@@ -5,21 +5,21 @@
 
 static const float COOLDOWN_DROP_RATE = 1.f;
 
-StateIdle2::StateIdle2(const std::string& stateID, GameObject* go)
+StateIdle::StateIdle(const std::string& stateID, GameObject* go)
 	: State(stateID),
 	m_go(go)
 {
 }
 
-StateIdle2::~StateIdle2()
+StateIdle::~StateIdle()
 {
 }
 
-void StateIdle2::Enter()
+void StateIdle::Enter()
 {
 }
 
-void StateIdle2::Update(double dt)
+void StateIdle::Update(double dt)
 {
 	//if (m_go->nearest == nullptr || m_go->nearest->active == false || m_go->nearest->sm->GetCurrentState() == "Dead")
 	{
@@ -64,26 +64,26 @@ void StateIdle2::Update(double dt)
 		m_go->moveLeft = m_go->moveRight = m_go->moveUp = m_go->moveDown = false;
 }
 
-void StateIdle2::Exit()
+void StateIdle::Exit()
 {
 }
 
-StateChase2::StateChase2(const std::string& stateID, GameObject* go)
+StateChase::StateChase(const std::string& stateID, GameObject* go)
 	: State(stateID),
 	m_go(go)
 {
 }
 
-StateChase2::~StateChase2()
+StateChase::~StateChase()
 {
 }
 
-void StateChase2::Enter()
+void StateChase::Enter()
 {
 
 }
 
-void StateChase2::Update(double dt)
+void StateChase::Update(double dt)
 {
 	//if (m_go->nearest == nullptr || m_go->nearest->active == false || m_go->nearest->sm->GetCurrentState() == "Dead")
 	{
@@ -104,6 +104,6 @@ void StateChase2::Update(double dt)
 	}
 }
 
-void StateChase2::Exit()
+void StateChase::Exit()
 {
 }
