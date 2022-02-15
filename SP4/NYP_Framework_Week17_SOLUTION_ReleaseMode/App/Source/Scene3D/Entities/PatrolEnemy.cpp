@@ -409,6 +409,11 @@ bool CPatrolEnemy3D::Update(const double dElapsedTime)
 					}
 				}
 			}
+			
+			if glm::distance(vec3Position, cPlayer3D->GetPosition() <= 1)
+			{
+		            //cPlayer3D->GetHP() 
+			}
 
 			// Process the movement
 			ProcessMovement(ENEMYMOVEMENT::FORWARD, (float)dElapsedTime);
