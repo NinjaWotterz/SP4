@@ -2,7 +2,7 @@
 #define CONCRETE_MESSAGE_H
 
 #include "Message.h"
-#include "GameObject.h"
+//#include "GameObject.h"
 
 struct MessageWRU : public Message
 {
