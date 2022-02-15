@@ -159,7 +159,7 @@ protected:
 	int GetHP();
 	void SetHP(int dif);
 	bool GetActive();
-	void SetActive(bool);
+	void SetActive(bool at);
 
 	float invulnerableTime;
 	// Physics
