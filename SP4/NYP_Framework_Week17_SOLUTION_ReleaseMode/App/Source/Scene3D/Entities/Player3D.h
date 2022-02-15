@@ -156,6 +156,10 @@ protected:
 	// Hp
 	int health;
 	bool active;
+	int GetHP();
+	void SetHP(int dif);
+	bool GetActive();
+	void SetActive(bool);
 
 	float invulnerableTime;
 	// Physics
