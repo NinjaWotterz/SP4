@@ -195,6 +195,9 @@ bool CPlayer3D::Init(void)
 	cArrow->Init();
 	cArrow->SetShader("Shader3D");
 	
+	health = 3;
+	active = true;
+	
 	return true;
 }
 
