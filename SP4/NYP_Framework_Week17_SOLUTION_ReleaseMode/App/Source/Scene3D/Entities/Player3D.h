@@ -152,6 +152,10 @@ protected:
 	bool bCameraSwayDirection; // false = left, true = right
 	bool bCameraSwayActive;
 	bool bUpdateCameraSway;
+	
+	// Hp
+	int health;
+	bool active;
 
 	float invulnerableTime;
 	// Physics
