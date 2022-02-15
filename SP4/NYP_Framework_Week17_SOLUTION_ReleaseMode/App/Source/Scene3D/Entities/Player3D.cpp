@@ -710,3 +710,20 @@ void CPlayer3D::PrintSelf(void)
 	cout << "CPlayer3D::PrintSelf()" << endl;
 	cout << "========================" << endl;
 }
+
+int CPlayer3D::GetHP()
+{
+	return health;
+}
+void CPlayer3D::SetHP(int dif)
+{
+	health += dif;
+}
+bool CPlayer3D::GetActive()
+{
+	return active;
+}
+void CPlayer3D::SetActive(bool at)
+{
+	active = at;
+}
