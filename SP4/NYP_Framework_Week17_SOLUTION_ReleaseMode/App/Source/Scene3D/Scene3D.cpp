@@ -184,7 +184,15 @@ bool CScene3D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Explosion.ogg"), 2, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Jump.ogg"), 3, true);
 
+	//m_programID = CShaderManager::GetInstance()->Use("Shader3D_Shadow");
 	// Load the Environment Entities
+	//m_parameters[U_FOG_COLOR] = glGetUniformLocation(m_programID, "fogParam.color");
+	//m_parameters[U_FOG_START] = glGetUniformLocation(m_programID, "fogParam.start");
+	//m_parameters[U_FOG_END] = glGetUniformLocation(m_programID, "fogParam.end");
+	//m_parameters[U_FOG_DENSITY] = glGetUniformLocation(m_programID, "fogParam.density");
+	//m_parameters[U_FOG_TYPE] = glGetUniformLocation(m_programID, "fogParam.type");
+	//m_parameters[U_FOG_ENABLED] = glGetUniformLocation(m_programID, "fogParam.enabled");
+
 	// Load the SkyBox
 	cSkyBox = CSkyBox::GetInstance();
 	// Set a shader to this class instance of CSkyBox

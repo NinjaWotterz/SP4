@@ -449,7 +449,10 @@ void CPlayer3D::ProcessMovement(const PLAYERMOVEMENT direction, const float delt
 	//	RollbackPositionXZ();
 	//}
 	//cout << "Player is moving" << endl;
-
+	if (cTerrain->IsInWall(vec3Position)) {
+		RollbackPositionXZ();
+		cout << "Player is in wall" << endl;
+	}
 }
 
 /**
