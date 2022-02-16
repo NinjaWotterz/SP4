@@ -237,7 +237,7 @@ void CEntity3D::RollbackPosition(void)
 void CEntity3D::RollbackPositionXZ(void)
 {
 	vec3Position.x = vec3PreviousPosition.x;
-	vec3Position.y = vec3PreviousPosition.y;
+	vec3Position.z = vec3PreviousPosition.z;
 }
 
 void CEntity3D::PrintSelf(void)

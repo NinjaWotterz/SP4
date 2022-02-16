@@ -48,6 +48,7 @@ public:
 	virtual void PostRender(void);
 
 	bool LoadHeightMapFromImage(const string sImagePath);
+	bool LoadGridMapFromImage(const string sImagePath);
 	void ReleaseHeightmap();
 
 	void SetRenderSize(const float fQuadSize, const float fHeight);
@@ -71,6 +72,7 @@ public:
 
 	glm::vec3 GetDownwardSlope(const float fX, const float fZ);
 
+	bool IsInWall(glm::vec3 pPos);
 protected:
 	// Constructor
 	CTerrain(void);
@@ -97,6 +99,10 @@ protected:
 	vector< vector< glm::vec3> > vVertexData;
 	// The raw coordinates data
 	vector< vector< glm::vec2> > vCoordsData;
+
+	vector< vector< glm::vec3> > vGridVertexData;
+	vector< vector< glm::vec2> > vGridCoordsData;
+
 	// The raw normal data
 	vector< vector<glm::vec3> > vFinalNormals;
 

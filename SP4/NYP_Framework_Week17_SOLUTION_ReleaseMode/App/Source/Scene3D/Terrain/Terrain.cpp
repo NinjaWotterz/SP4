@@ -51,9 +51,9 @@ bool CTerrain::Init(void)
 	if (LoadHeightMapFromImage("Image/Terrain/World/terrain.bmp") == false)
 		return false;
 
-	//if (LoadGridMapFromImage("Image/Terrain/World/terrain_test1.bmp") == false) {
-
-	//}
+	if (LoadGridMapFromImage("Image/Terrain/World/terrain_test1.bmp") == false) {
+		return false;
+	}
 
 	return true;
 }
@@ -162,6 +162,86 @@ void CTerrain::Render(void)
 void CTerrain::PostRender(void)
 {
 	glDepthFunc(GL_LESS); // set depth function back to default
+}
+
+bool CTerrain::IsInWall(glm::vec3 pPos) {
+	int row = int((pPos.z + 50.f)); // player X for map is -50 to 50;
+	int col = int((pPos.x + 50.f)); // player X for map is -50 to 50;
+	if (row > 99 || row < 0 || col > 99 || col < 0) {
+		return true;
+	}
+
+	if (vGridVertexData[row][col].y >= 1.0f) {
+		return true;
+	}
+
+	return false;
+}
+
+bool CTerrain::LoadGridMapFromImage(const string sImagePath) {
+	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+	FIBITMAP* dib(0);
+	fif = FreeImage_GetFileType(sImagePath.c_str(), 0); // Check the file signature and deduce its format
+
+	if (fif == FIF_UNKNOWN) // If still unknown, try to guess the file format from the file extension
+		fif = FreeImage_GetFIFFromFilename(sImagePath.c_str());
+
+	if (fif == FIF_UNKNOWN) // If still unknown, return failure
+		return false;
+
+	if (FreeImage_FIFSupportsReading(fif)) // Check if the plugin has reading capabilities and load the file
+		dib = FreeImage_Load(fif, sImagePath.c_str());
+	if (!dib)
+		return false;
+
+	BYTE* bDataPointer = FreeImage_GetBits(dib); // Retrieve the image data
+	iRows = FreeImage_GetHeight(dib);
+	iCols = FreeImage_GetWidth(dib);
+	// We also require our image to be either 24-bit (classic RGB) or 8-bit (luminance)
+	if (bDataPointer == NULL || iRows == 0 || iCols == 0 || (FreeImage_GetBPP(dib) != 24 && FreeImage_GetBPP(dib) != 8))
+		return false;
+
+	// How much to increase data pointer to get to next pixel data
+	unsigned int ptr_inc = FreeImage_GetBPP(dib) == 24 ? 3 : 1;
+	// Length of one row in data
+	unsigned int row_step = ptr_inc * iCols;
+
+	vGridVertexData = vector< vector< glm::vec3> >(iRows, vector<glm::vec3>(iCols));
+	vGridCoordsData = vector< vector< glm::vec2> >(iRows, vector<glm::vec2>(iCols));
+	vGridVertexData.resize(iRows, vector<glm::vec3>(iCols, glm::vec3(0.0f)));
+	vGridCoordsData.resize(iRows, vector<glm::vec2>(iCols, glm::vec2(0.0f)));
+
+	float fTextureU = float(iCols) * 0.1f;
+	float fTextureV = float(iRows) * 0.1f;
+	for (int i = 0; i < iRows; i++)
+	{
+		for (int j = 0; j < iCols; j++)
+		{
+			float fScaleC = float(j) / float(iCols - 1);
+			float fScaleR = float(i) / float(iRows - 1);
+			// if height  == 1 <- this is a wall, the rest we treat as  walkable now
+			// height go from 0-255, 128,128,128
+			// per grid cell is 0...1, total 100 grid cell
+			float fVertexHeight = float(*(bDataPointer + row_step * i + j * ptr_inc)) / 255.0f;
+			
+			vGridVertexData[i][j] = glm::vec3(-0.5f + fScaleC, fVertexHeight, -0.5f + fScaleR);
+			vGridCoordsData[i][j] = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
+		}
+	}
+	cout << "Print map data" << endl;
+	for (vector< glm::vec3>& row : vGridVertexData) {
+		
+		for (glm::vec3& col : row) {
+			if (col.y >= 1.f) {
+				cout << "*";
+			}
+			else {
+				cout << " ";
+			}
+		}
+		cout << endl;
+	}
+	cout << "End map data" << endl;
 }
 
 /**
