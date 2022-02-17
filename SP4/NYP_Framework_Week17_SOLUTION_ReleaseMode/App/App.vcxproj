@@ -39,6 +39,7 @@
     <ClCompile Include="Source\Scene3D\CameraEffects\CrossHair.cpp" />
     <ClCompile Include="Source\Scene3D\CameraEffects\ScopeScreen.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\ArrowMapIndicator.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Ceiling.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Enemy3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\EntityManager.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\FlyingObstacle.cpp" />
@@ -55,6 +56,7 @@
     <ClCompile Include="Source\Scene3D\Entities\Target3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Tree3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\TreeKabak3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Walls.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\WoodenCrate3D.cpp" />
     <ClCompile Include="Source\Scene3D\GUI_Scene3D.cpp" />
     <ClCompile Include="Source\Scene3D\Minimap\Minimap.cpp" />
@@ -108,6 +110,7 @@
     <ClInclude Include="Source\Scene3D\CameraEffects\CrossHair.h" />
     <ClInclude Include="Source\Scene3D\CameraEffects\ScopeScreen.h" />
     <ClInclude Include="Source\Scene3D\Entities\ArrowMapIndicator.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Ceiling.h" />
     <ClInclude Include="Source\Scene3D\Entities\Enemy3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\EntityManager.h" />
     <ClInclude Include="Source\Scene3D\Entities\FlyingObstacle.h" />
@@ -124,6 +127,7 @@
     <ClInclude Include="Source\Scene3D\Entities\Target3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\Tree3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\TreeKabak3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Walls.h" />
     <ClInclude Include="Source\Scene3D\Entities\WoodenCrate3D.h" />
     <ClInclude Include="Source\Scene3D\GUI_Scene3D.h" />
     <ClInclude Include="Source\Scene3D\Minimap\Minimap.h" />

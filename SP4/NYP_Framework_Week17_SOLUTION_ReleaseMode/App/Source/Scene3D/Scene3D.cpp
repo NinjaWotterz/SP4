@@ -37,6 +37,8 @@
 #include "Entities/TreeKabak3D.h"
 #include "Entities/Tree3D.h"
 
+#include "Entities/Walls.h"
+#include "Entities/Ceiling.h"
 
 // Include CSpinTower
 #include "SceneGraph/SpinTower.h"
@@ -354,12 +356,12 @@ bool CScene3D::Init(void)
 	//}
 
 	// Initialise the CTreeKabak3D
-	//CTreeKabak3D* cTreeKabak3D = new CTreeKabak3D(glm::vec3(25.0f, 0.0f, -5.0f));
+	//CTreeKabak3D* cTreeKabak3D = new CTreeKabak3D(glm::vec3(0.0f, 0.0f, 0.0f));
 	//cTreeKabak3D->SetInstancingMode(true);
 	//if (cTreeKabak3D->IsInstancedRendering() == true)
 	//{
 	//	cTreeKabak3D->SetScale(glm::vec3(15.f));
-	//	cTreeKabak3D->SetNumOfInstance(400);
+	//	cTreeKabak3D->SetNumOfInstance(1000);
 	//	cTreeKabak3D->SetSpreadDistance(50.0f);
 
 	//	cTreeKabak3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
@@ -429,6 +431,44 @@ bool CScene3D::Init(void)
 	//{
 	//	delete cMossrock3D;
 	//}
+
+	CWalls3D* cWalls3D = new CWalls3D(glm::vec3(0.0f, 0.0f, 0.0f));
+	cWalls3D->SetInstancingMode(true);
+	if (cWalls3D->IsInstancedRendering() == true)
+	{
+		cWalls3D->SetScale(glm::vec3(1.f));
+		cWalls3D->SetNumOfInstance(cTerrain->GetTotalWalls());
+		cWalls3D->SetSpreadDistance(100.0f);
+
+		cWalls3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+	}
+	if (cWalls3D->Init() == true)
+	{
+		cEntityManager->Add(cWalls3D);
+	}
+	else
+	{
+		delete cWalls3D;
+	}
+
+	CCeiling3D* cCeiling3D = new CCeiling3D(glm::vec3(0.0f, 0.0f, 0.0f));
+	cCeiling3D->SetInstancingMode(true);
+	if (cCeiling3D->IsInstancedRendering() == true)
+	{
+		cCeiling3D->SetScale(glm::vec3(1.f));
+		cCeiling3D->SetNumOfInstance(cTerrain->GetTotalWalls());
+		cCeiling3D->SetSpreadDistance(100.0f);
+
+		cCeiling3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+	}
+	if (cCeiling3D->Init() == true)
+	{
+		cEntityManager->Add(cCeiling3D);
+	}
+	else
+	{
+		delete cCeiling3D;
+	}
 
 	// Initialise a CSpinTower
 	//CSpinTower::Create();
@@ -945,7 +985,7 @@ void CScene3D::Render(void)
 	// Render the entities
 	cEntityManager->SetView(playerView);
 	cEntityManager->SetProjection(playerProjection);
-	cEntityManager->Render();
+	cEntityManager->RenderMiniMap();
 
 	
 	// Render the entities for the minimap

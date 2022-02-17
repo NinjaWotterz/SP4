@@ -140,4 +140,22 @@ void CEntityManager::Render(void)
 	}
 }
 
+void CEntityManager::RenderMiniMap(void)
+{
+	// Render all entities
+	std::list<CEntity3D*>::iterator it, end;
+	end = lEntity3D.end();
+	for (it = lEntity3D.begin(); it != end; ++it)
+	{
+		if ((*it)->GetType() == CEntity3D::CEILING) {
+			continue;
+		}
+		(*it)->SetView(view);
+		(*it)->SetProjection(projection);
+		(*it)->PreRender();
+		(*it)->Render();
+		(*it)->PostRender();
+	}
+}
+
 

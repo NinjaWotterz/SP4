@@ -181,6 +181,7 @@ bool CTerrain::IsInWall(glm::vec3 pPos) {
 bool CTerrain::LoadGridMapFromImage(const string sImagePath) {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	FIBITMAP* dib(0);
+	totalWalls = 0;
 	fif = FreeImage_GetFileType(sImagePath.c_str(), 0); // Check the file signature and deduce its format
 
 	if (fif == FIF_UNKNOWN) // If still unknown, try to guess the file format from the file extension
@@ -234,6 +235,7 @@ bool CTerrain::LoadGridMapFromImage(const string sImagePath) {
 		for (glm::vec3& col : row) {
 			if (col.y >= 1.f) {
 				cout << "*";
+				totalWalls += 1;
 			}
 			else {
 				cout << " ";
@@ -241,9 +243,12 @@ bool CTerrain::LoadGridMapFromImage(const string sImagePath) {
 		}
 		cout << endl;
 	}
-	cout << "End map data" << endl;
+	cout << "End map data, total walls: " << totalWalls << endl;
 }
 
+int CTerrain::GetTotalWalls() {
+	return totalWalls;
+}
 /**
  @brief Loads a heightmap and builds up all OpenGL structures for rendering.
  @param sImagePath - path to the (optimally) grayscale

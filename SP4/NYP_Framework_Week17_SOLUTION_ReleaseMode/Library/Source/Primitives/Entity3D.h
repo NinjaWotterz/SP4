@@ -35,6 +35,7 @@ public:
 		NPC,
 		BOSS,
 		OTHERS,		// Default value: Other entities such as ground and skybox
+		CEILING,
 		ITEM,
 		STRUCTURE,	// Buildings etc
 		TOWER,
