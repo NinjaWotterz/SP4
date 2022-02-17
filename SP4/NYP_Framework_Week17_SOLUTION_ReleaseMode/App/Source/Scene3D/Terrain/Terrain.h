@@ -46,7 +46,7 @@ public:
 	virtual void Render(void);
 	// PostRender
 	virtual void PostRender(void);
-
+	int GetTotalWalls();
 	bool LoadHeightMapFromImage(const string sImagePath);
 	bool LoadGridMapFromImage(const string sImagePath);
 	void ReleaseHeightmap();
@@ -85,7 +85,7 @@ protected:
 	bool bShaderProgramLoaded;
 	int iRows;
 	int iCols;
-
+	int totalWalls;
 	// The Render Scale for this terrain
 	glm::vec3 vRenderScale;
 	// The min and max positions for this terrain

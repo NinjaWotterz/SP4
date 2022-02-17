@@ -1,9 +1,7 @@
 /**
- CTreeKabak3D
- By: Toh Da Jun
- Date: Sept 2021
+CWalls3D
  */
-#include "TreeKabak3D.h"
+#include "Walls.h"
 #include "System/LoadOBJ.h"
 
  // Include ImageLoader
@@ -21,7 +19,7 @@ using namespace std;
 /**
  @brief Default Constructor
  */
-CTreeKabak3D::CTreeKabak3D(void)
+CWalls3D::CWalls3D(void)
 	: bInstancedRendering(false)
 	, iNumOfInstance(10)
 	, fSpreadDistance(5.0f)
@@ -38,10 +36,10 @@ CTreeKabak3D::CTreeKabak3D(void)
  @param yaw A const float variable which contains the yaw of the camera
  @param pitch A const float variable which contains the pitch of the camera
  */
-CTreeKabak3D::CTreeKabak3D(	const glm::vec3 vec3Position,
-							const glm::vec3 vec3Front,
-							const float fYaw,
-							const float fPitch)
+CWalls3D::CWalls3D(const glm::vec3 vec3Position,
+	const glm::vec3 vec3Front,
+	const float fYaw,
+	const float fPitch)
 	: bInstancedRendering(false)
 	, iNumOfInstance(10)
 	, fSpreadDistance(5.0f)
@@ -54,7 +52,7 @@ CTreeKabak3D::CTreeKabak3D(	const glm::vec3 vec3Position,
 /**
  @brief Destructor
  */
-CTreeKabak3D::~CTreeKabak3D(void)
+CWalls3D::~CWalls3D(void)
 {
 }
 
@@ -62,7 +60,7 @@ CTreeKabak3D::~CTreeKabak3D(void)
  @brief Initialise this class instance
  @return true is successfully initialised this class instance, else false
  */
-bool CTreeKabak3D::Init(void)
+bool CWalls3D::Init(void)
 {
 	// Call the parent's Init()
 	CEntity3D::Init();
@@ -74,12 +72,12 @@ bool CTreeKabak3D::Init(void)
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
-	
-	std::string file_path = "Models/Tree/Tree.obj";
+
+	std::string file_path = "Models/Dungeon/wall2.obj";
 	bool success = CLoadOBJ::LoadOBJ(file_path.c_str(), vertices, uvs, normals, true);
 	if (!success)
 		return false;
-	
+
 	// Load the vertices and indices
 	std::vector<ModelVertex> vertex_buffer_data;
 	std::vector<GLuint> index_buffer_data;
@@ -123,10 +121,10 @@ bool CTreeKabak3D::Init(void)
 	}
 
 	// Load and create a texture 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Models/Tree/tree.tga", false);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Models/dungeon/dungeon.jpg", false);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Models/tree.jpg" << endl;
+		cout << "Unable to load Models/dungeon.jpg" << endl;
 		return false;
 	}
 
@@ -134,39 +132,45 @@ bool CTreeKabak3D::Init(void)
 	{
 		// Generate the list of transformation matrices which 
 		// indicates where each instance will be at, and its orientation
+		CTerrain* cTerrainInstance = CTerrain::GetInstance();
+		iNumOfInstance = cTerrainInstance->GetTotalWalls();
 		glm::mat4* modelMatrices = new glm::mat4[iNumOfInstance];
 
 		// Initialize random seed
 		srand((unsigned int)glfwGetTime());
-		CTerrain* cTerrainInstance = CTerrain::GetInstance();
-		for (unsigned int i = 0; i < iNumOfInstance;)
+		int index = 0;
+		for (unsigned int i = 0; i < 100; i+=1)
 		{
-			glm::mat4 model = glm::mat4(1.0f);
-			// 1. Use Translation to randomly disperse the trees in a rectangular area
-			//float x = vec3Position.x + ((rand() % 100) - 50.f) * fSpreadDistance * 0.01f - fSpreadDistance * 0.5f;
-			//float z = vec3Position.z + ((rand() % 100) - 50.f) * fSpreadDistance * 0.01f - fSpreadDistance * 0.5f;
-			float x = vec3Position.x + ((rand() % 100) - 50.f) + ((rand() % 10000)/10000.f);
-			float z = vec3Position.z + ((rand() % 100) - 50.f) + ((rand() % 10000)/10000.f);
-			if (x < -49 || x > 49.f || z < -49 || z > 49.f) {
-				continue;
-			}
-			float y = cTerrainInstance->GetHeight(x, z);
-			// if not in wall areas, not allowed to place tree on maze.
-			cout << "Trying tree X:" << x << ", Y: " << y << endl;
-			if (!cTerrainInstance->IsInWall(glm::vec3(x, y, z))) {
-				continue;
-			}
-			model = glm::translate(model, glm::vec3(x, y, z));
+			for (unsigned int j = 0; j < 100; j+=1)
+			{
+				// x will go -49.5 to 49.5
+				float x = -49.5f + i;
+				float z = -49.5f + j;
+				float y = 4.82352972+1.5f; 
+				/*try {
+					y = CTerrain::GetInstance()->GetHeight(x, z);
+				}
+				catch (exception e) { y = 4.82352972; }*/
 
-			// 2. Use scaling to create trees of various sizes
-			float scale = (rand() % 100) * 0.0005f + 0.01f;
-			model = glm::scale(model, glm::vec3(vec3Scale.x * scale,
-				vec3Scale.y * scale,
-				vec3Scale.z * scale));
+				if (!cTerrainInstance->IsInWall(glm::vec3(x, y, z))) {
+					//y = 5+4.82352972;
+					continue;
+				}
+				glm::mat4 model = glm::mat4(1.0f);
+				// 1. Use Translation to randomly disperse the trees in a rectangular area
+				
+				model = glm::translate(model, glm::vec3(x, y, z));
 
-			// 3. Add this transformation matrix to list of matrices
-			modelMatrices[i] = model;
-			++i;
+				// 2. Use scaling to create trees of various sizes
+				float scale = 1.f; // (rand() % 100) * 0.0005f + 0.01f;
+				model = glm::scale(model, glm::vec3(vec3Scale.x * scale,
+					vec3Scale.y * scale,
+					vec3Scale.z * scale));
+
+				// 3. Add this transformation matrix to list of matrices
+				modelMatrices[index] = model;
+				index += 1;
+			}
 		}
 
 		// configure instanced array
@@ -174,7 +178,7 @@ bool CTreeKabak3D::Init(void)
 		unsigned int buffer;
 		glGenBuffers(1, &buffer);
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
-		glBufferData(GL_ARRAY_BUFFER, iNumOfInstance * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, index * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 		// Delete the array of modelMatrices since we had already uploaded it to the graphics card
 		delete[] modelMatrices;
 
@@ -211,7 +215,7 @@ bool CTreeKabak3D::Init(void)
  @brief Set model
  @param model A const glm::mat4 variable containing the model for this class instance
  */
-void CTreeKabak3D::SetModel(const glm::mat4 model)
+void CWalls3D::SetModel(const glm::mat4 model)
 {
 	this->model = model;
 }
@@ -220,7 +224,7 @@ void CTreeKabak3D::SetModel(const glm::mat4 model)
  @brief Set view
  @param view A const glm::mat4 variable containing the model for this class instance
  */
-void CTreeKabak3D::SetView(const glm::mat4 view)
+void CWalls3D::SetView(const glm::mat4 view)
 {
 	this->view = view;
 }
@@ -229,7 +233,7 @@ void CTreeKabak3D::SetView(const glm::mat4 view)
  @brief Set projection
  @param projection A const glm::mat4 variable containing the model for this class instance
  */
-void CTreeKabak3D::SetProjection(const glm::mat4 projection)
+void CWalls3D::SetProjection(const glm::mat4 projection)
 {
 	this->projection = projection;
 }
@@ -238,7 +242,7 @@ void CTreeKabak3D::SetProjection(const glm::mat4 projection)
 @brief Set the instancing mode
 @param bInstancedRendering A const bool containing the status of the instancing mode
 */
-void CTreeKabak3D::SetInstancingMode(const bool bInstancedRendering)
+void CWalls3D::SetInstancingMode(const bool bInstancedRendering)
 {
 	this->bInstancedRendering = bInstancedRendering;
 }
@@ -247,7 +251,7 @@ void CTreeKabak3D::SetInstancingMode(const bool bInstancedRendering)
  @brief Set the number of instances
  @param iNumOfInstance A const unsigned int containing the number of instances to render for this entity
  */
-void CTreeKabak3D::SetNumOfInstance(const unsigned int iNumOfInstance)
+void CWalls3D::SetNumOfInstance(const unsigned int iNumOfInstance)
 {
 	this->iNumOfInstance = iNumOfInstance;
 }
@@ -256,7 +260,7 @@ void CTreeKabak3D::SetNumOfInstance(const unsigned int iNumOfInstance)
  @brief Set the spread distance
  @param fSpreadDistance A const float containing the spread distance when randomly generating positions for the instances
  */
-void CTreeKabak3D::SetSpreadDistance(const float fSpreadDistance)
+void CWalls3D::SetSpreadDistance(const float fSpreadDistance)
 {
 	this->fSpreadDistance = fSpreadDistance;
 }
@@ -266,7 +270,7 @@ void CTreeKabak3D::SetSpreadDistance(const float fSpreadDistance)
  @param dt A const double variable containing the elapsed time since the last frame
  @return A bool variable
  */
-bool CTreeKabak3D::Update(const double dElapsedTime)
+bool CWalls3D::Update(const double dElapsedTime)
 {
 	if (!bInstancedRendering)
 	{
@@ -284,7 +288,7 @@ bool CTreeKabak3D::Update(const double dElapsedTime)
 /**
 @brief PreRender Set up the OpenGL display environment before rendering
 */
-void CTreeKabak3D::PreRender(void)
+void CWalls3D::PreRender(void)
 {
 	// Change depth function so depth test passes when values are equal to depth buffer's content
 	glDepthFunc(GL_LEQUAL);
@@ -296,7 +300,7 @@ void CTreeKabak3D::PreRender(void)
 /**
 @brief Render Render this instance
 */
-void CTreeKabak3D::Render(void)
+void CWalls3D::Render(void)
 {
 	if (bInstancedRendering)
 	{
@@ -308,7 +312,7 @@ void CTreeKabak3D::Render(void)
 		CShaderManager::GetInstance()->activeShader->setInt("texture_diffuse1", 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, iTextureID); // note: we also made the textures_loaded vector public (instead of private) from the model class.
-		
+
 		// We instanced render the trees. if you have multiple VAOs, then you can render them using this loop
 		for (unsigned int i = 0; i < 1; i++)
 		{
@@ -329,10 +333,10 @@ void CTreeKabak3D::Render(void)
 		// bind textures on corresponding texture units
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, iTextureID);
-			// Render the OBJ
-			glBindVertexArray(VAO);
-				glDrawElements(GL_TRIANGLES, iIndicesSize, GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
+		// Render the OBJ
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, iIndicesSize, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
@@ -340,7 +344,7 @@ void CTreeKabak3D::Render(void)
 /**
 @brief PostRender Set up the OpenGL display environment after rendering.
 */
-void CTreeKabak3D::PostRender(void)
+void CWalls3D::PostRender(void)
 {
 	glDepthFunc(GL_LESS); // set depth function back to default
 }
@@ -348,8 +352,8 @@ void CTreeKabak3D::PostRender(void)
 /**
  @brief Print Self
  */
-void CTreeKabak3D::PrintSelf(void)
+void CWalls3D::PrintSelf(void)
 {
-	cout << "CTreeKabak3D::PrintSelf()" << endl;
+	cout << "CWalls3D::PrintSelf()" << endl;
 	cout << "========================" << endl;
 }
