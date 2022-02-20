@@ -567,12 +567,26 @@ bool CScene3D::Update(const double dElapsedTime)
 	static bool cameraLeft = false;
 	static bool cameraRight = false;
 	static bool camera180 = false;
+	static bool sprint = false;
 	float sprintspeed = 2.0f;
 	float addonspeed = 1.0f;
 	// Get keyboard updates for player3D
 	if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_LEFT_SHIFT))
 	{
-		addonspeed = sprintspeed;
+		CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+		CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+		if (cInventoryItem->GetCount() > 0)
+		{
+			addonspeed = sprintspeed;
+			sprint = true;
+		}
+	}
+	else if (!CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_LEFT_SHIFT))
+	{
+		sprint = false;
+		CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+		CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+		cInventoryItem->Add(1);
 	}
 	if (!down && !left && !right && CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_W))
 	{
@@ -580,6 +594,12 @@ bool CScene3D::Update(const double dElapsedTime)
 		up = true;
 		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::FORWARD, (float)dElapsedTime * addonspeed);
 		((CCameraShake*)CCameraEffectsManager::GetInstance()->Get("CameraShake"))->bToBeUpdated = true;
+		if (sprint == true)
+		{
+			CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+			CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
+		}
 	}
 	else if (!up && !left && !right && CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_S))
 	{
@@ -587,6 +607,12 @@ bool CScene3D::Update(const double dElapsedTime)
 		down = true;
 		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::BACKWARD, (float)dElapsedTime * addonspeed);
 		((CCameraShake*)CCameraEffectsManager::GetInstance()->Get("CameraShake"))->bToBeUpdated = true;
+		if (sprint == true)
+		{
+			CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+			CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
+		}
 	}
 	else if (!up && !down && !right && CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_Q))
 	{
@@ -594,6 +620,12 @@ bool CScene3D::Update(const double dElapsedTime)
 		left = true;
 		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::LEFT, (float)dElapsedTime * (addonspeed / 2));
 		((CCameraShake*)CCameraEffectsManager::GetInstance()->Get("CameraShake"))->bToBeUpdated = true;
+		if (sprint == true)
+		{
+			CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+			CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
+		}
 	}
 	else if (!up && !down && !left && CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_E))
 	{
@@ -601,6 +633,12 @@ bool CScene3D::Update(const double dElapsedTime)
 		right = true;
 		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::RIGHT, (float)dElapsedTime * (addonspeed / 2));
 		((CCameraShake*)CCameraEffectsManager::GetInstance()->Get("CameraShake"))->bToBeUpdated = true;
+		if (sprint == true)
+		{
+			CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+			CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
+		}
 	}
 	if (playerMoved == false)
 	{
