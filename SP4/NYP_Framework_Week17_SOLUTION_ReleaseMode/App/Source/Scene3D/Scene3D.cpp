@@ -30,6 +30,7 @@
 #include "WeaponInfo\Sniper.h"
 
 // Include CRock3D
+#include "Entities/PatrolEnemy.h"
 #include "Entities/Rock3D.h"
 #include "Entities/Mossrock.h"
 #include "Entities/Target3D.h"
@@ -51,6 +52,8 @@
 // Include CCameraShake
 #include "CameraEffects/CameraShake.h"
 #include "CameraEffects/CameraRecoil.h"
+
+#include "../Application.h"
 
 #include <iostream>
 using namespace std;
@@ -165,7 +168,7 @@ bool CScene3D::Init(void)
 	// configure global opengl state
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	minimapZoom = 60.f;
+	minimapZoom = 25.f;
 	// Configure the camera
 	cCamera = CCamera::GetInstance();
 	cCamera->vec3Position = glm::vec3(0.0f, 0.5f, 3.0f);
@@ -265,26 +268,37 @@ bool CScene3D::Init(void)
 	// Initialise the cEnemy3D
 	float fCheckHeight = cTerrain->GetHeight(0.0f, -10.0f);
 
-	for (int i = 0; i < 10; ++i) {
-		CEnemy3D* cEnemy3D = new CEnemy3D();
-		cEnemy3D->SetShader("Shader3D");
-		cEnemy3D->Init();
-		
-		cEnemy3D->InitCollider("Shader3D_Line", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	//for (int i = 0; i < 10;) {
+	//	CPatrolEnemy3D* cEnemy3D = new CPatrolEnemy3D();
+	//	float xPositive = ((rand() % 100) < 50) ? -1 : 1;
+	//	float zPositive = ((rand() % 100) < 50) ? -1 : 1;
+	//	float eXPos = xPositive * (rand() % 45);
+	//	float eZPos = zPositive * (rand() % 45);
+	//	float eYPos = cTerrain->GetHeight(eXPos, eZPos)+0.5f;
+	//	glm::vec3 eSpawnPos = glm::vec3(eXPos, eYPos, eZPos);
+	//	if (cTerrain->IsInWall(eSpawnPos)) {
+	//		continue;
+	//	}
+	//	cEnemy3D->SetPosition(eSpawnPos);
+	//	cEnemy3D->SetShader("Shader3D");
+	//	cEnemy3D->Init();
+	//	
+	//	cEnemy3D->InitCollider("Shader3D_Line", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
-		// Assign a cPistol to the cEnemy3D
-		CPistol* cEnemyPistol = new CPistol();
-		cEnemyPistol->SetScale(glm::vec3(1.75f, 1.75f, 1.75f));
-		// Initialise the instance
-		cEnemyPistol->Init();
-		cEnemyPistol->SetShader("Shader3D_Model");
-		cEnemy3D->SetWeapon(0, cEnemyPistol);
-		cEnemy3D->SetStatus(false);
+	//	// Assign a cPistol to the cEnemy3D
+	//	CPistol* cEnemyPistol = new CPistol();
+	//	cEnemyPistol->SetScale(glm::vec3(1.75f, 1.75f, 1.75f));
+	//	// Initialise the instance
+	//	cEnemyPistol->Init();
+	//	cEnemyPistol->SetShader("Shader3D_Model");
+	//	cEnemy3D->SetWeapon(0, cEnemyPistol);
+	//	cEnemy3D->SetStatus(true);
 
-		// Add the cEnemy3D to the cSolidObjectManager
-		cSolidObjectManager->Add(cEnemy3D);
-		enemyList.push_back(cEnemy3D);
-	}
+	//	// Add the cEnemy3D to the cSolidObjectManager
+	//	cSolidObjectManager->Add(cEnemy3D);
+	//	++i;
+	//	//enemyList.push_back(cEnemy3D);
+	//}
 
 	CItem3D* itemCrystal = new CItem3D(glm::vec3(-41.81, 14.6, 50.9));
 	itemCrystal->SetShader("Shader3D");
@@ -440,7 +454,7 @@ bool CScene3D::Init(void)
 		cWalls3D->SetNumOfInstance(cTerrain->GetTotalWalls());
 		cWalls3D->SetSpreadDistance(100.0f);
 
-		cWalls3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+		cWalls3D->SetShader("Shader3D_ShadowInstance");	// FOR INSTANCED RENDERING
 	}
 	if (cWalls3D->Init() == true)
 	{
@@ -459,7 +473,7 @@ bool CScene3D::Init(void)
 		cCeiling3D->SetNumOfInstance(cTerrain->GetTotalWalls());
 		cCeiling3D->SetSpreadDistance(100.0f);
 
-		cCeiling3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+		cCeiling3D->SetShader("Shader3D_ShadowInstance");	// FOR INSTANCED RENDERING
 	}
 	if (cCeiling3D->Init() == true)
 	{
@@ -536,6 +550,7 @@ void CScene3D::SpawnTower() {
 	// Add the cStructure3D to the cSolidObjectManager
 	cSolidObjectManager->Add(targetShootingPoint);
 	cTriggerPointsList.push_back(targetShootingPoint);
+
 }
 
 CFlyingObstacle* CScene3D::SpawnFlyingObstacle(glm::vec3 pos, CFlyingObstacle::PATROLMOVEMENT pm) {
@@ -584,7 +599,7 @@ bool CScene3D::Update(const double dElapsedTime)
 		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::RIGHT, (float)dElapsedTime);
 	}
 
-	if (playerMoved) {
+	/*if (playerMoved) {
 		minimapZoom += dElapsedTime * 20;
 	}
 	else {
@@ -596,7 +611,7 @@ bool CScene3D::Update(const double dElapsedTime)
 	}
 	if (minimapZoom < 45.f) {
 		minimapZoom = 45.f;
-	}
+	}*/
 
 	float arrowScale = 3.f * minimapZoom / 45.f;
 	cPlayer3D->GetArrow()->SetScale(glm::vec3(arrowScale));
@@ -732,7 +747,7 @@ bool CScene3D::Update(const double dElapsedTime)
 		//countdown = 30.f;
 	}
 
-	if (cGUI_Scene3D->isRunnngTargetEvent()) {
+	/*if (cGUI_Scene3D->isRunnngTargetEvent()) {
 		spawnTimer += dElapsedTime;
 		if (cGUI_Scene3D->GetEventRunning() == CStructure3D::EVENT_TRIGGER::DEFEND_STRUCTURE && spawnTimer > 3.f) {
 			spawnTimer = 0.f;
@@ -766,7 +781,7 @@ bool CScene3D::Update(const double dElapsedTime)
 
 			}
 		}
-	}
+	}*/
 
 	if (cCamera->GetZoomState() == false)
 	{
@@ -930,6 +945,140 @@ void CScene3D::PreRender(void)
 	// Clear the screen and buffer
 	glClearColor(0.0f, 0.1f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+}
+
+void CScene3D::RenderPassGPass()
+{
+	m_renderPass = RENDER_PASS_PRE;
+	m_lightDepthFBO.BindForWriting();
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	CShaderManager::GetInstance()->Use("Shader3D_GPass");
+
+	//These matrices should change when light position or direction changes
+	if (lights[0].type == Light::LIGHT_DIRECTIONAL)
+		m_lightDepthProj = glm::ortho(-1000, 1000, -1000, 1000, -1000, 2000);
+	else
+		m_lightDepthProj = glm::perspective(90.f, 1.f, 0.1f, 200.f);
+	m_lightDepthView = glm::lookAt(lights[0].position, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	RenderWorld();
+}
+
+void CScene3D::RenderPassMain()
+{
+	m_renderPass = RENDER_PASS_MAIN;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, Application::GetInstance()->GetWindowWidth(), Application::GetInstance()->GetWindowHeight());
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	CShaderManager::GetInstance()->Use("Shader3D_Shadow");
+
+	m_lightDepthFBO.BindForReading(GL_TEXTURE8);
+	glUniform1i(m_parameters[U_SHADOW_MAP], 8);
+
+	glm::mat4 perspective = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	//perspective.SetToOrtho(-80, 80, -60, 60, -1000, 1000);
+	projectionStack.LoadMatrix(perspective);
+
+	// Camera matrix
+	viewStack.LoadIdentity();
+	viewStack.LookAt(cCamera->vec3Position, cCamera->vec3Front, cCamera->vec3Front);
+
+	
+	// Model matrix : an identity matrix (model will be at the origin)
+	modelStack.LoadIdentity();
+
+	if (lights[0].type == Light::LIGHT_DIRECTIONAL)
+	{
+		glm::vec4 lightDir(lights[0].position.x, lights[0].position.y, lights[0].position.z, 1.f);
+		glm::vec4 lightDirection_cameraspace = viewStack.Top() * lightDir;
+		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
+	}
+	else if (lights[0].type == Light::LIGHT_SPOT)
+	{
+		glm::vec4 lightPosition_cameraspace = viewStack.Top() * glm::vec4(lights[0].position, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+		glm::vec4 spotDirection_cameraspace = viewStack.Top() * glm::vec4(lights[0].spotDirection, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT0_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
+	}
+	else
+	{
+		glm::vec4 lightPosition_cameraspace = viewStack.Top() * glm::vec4(lights[0].position, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+	}
+	if (lights[1].type == Light::LIGHT_DIRECTIONAL)
+	{
+		glm::vec4 lightDir(lights[1].position.x, lights[1].position.y, lights[1].position.z, 1.f);
+		glm::vec4 lightDirection_cameraspace = viewStack.Top() * lightDir;
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightDirection_cameraspace.x);
+	}
+	else if (lights[1].type == Light::LIGHT_SPOT)
+	{
+		glm::vec4 lightPosition_cameraspace = viewStack.Top() * glm::vec4(lights[1].position, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
+		glm::vec4 spotDirection_cameraspace = viewStack.Top() * glm::vec4(lights[1].spotDirection, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT1_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
+	}
+	else
+	{
+		glm::vec4 lightPosition_cameraspace = viewStack.Top() * glm::vec4(lights[1].position, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
+	}
+
+	//RenderMesh(meshList[GEO_AXES], false);
+
+	//RenderSkyPlane(meshList[GEO_SKYPLANE], Color(0, 1, 1), 100, 5, 5, 10, 10);
+
+	RenderWorld();
+}
+
+void CScene3D::RenderWorld(){
+	// Part 2: Render the entire scene as per normal
+		// Get the camera view and projection
+	glm::mat4 view = CCamera::GetInstance()->GetViewMatrix();;
+	glm::mat4 projection = glm::perspective(glm::radians(CCamera::GetInstance()->fZoom),
+		(float)cSettings->iWindowWidth / (float)cSettings->iWindowHeight,
+		0.1f, 1000.0f);
+	glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glDepthFunc(GL_LEQUAL);
+
+	// Render the SkyBox
+	cSkyBox->SetView(view);
+	cSkyBox->SetProjection(projection);
+	cSkyBox->PreRender();
+	cSkyBox->Render();
+	cSkyBox->PostRender();
+
+	// Render the Terrain
+	cTerrain->SetView(view);
+	cTerrain->SetProjection(projection);
+	cTerrain->PreRender();
+	cTerrain->Render();
+	cTerrain->PostRender();
+
+	// Render the entities
+	cEntityManager->SetView(view);
+	cEntityManager->SetProjection(projection);
+	cEntityManager->Render();
+
+	// Render the solid objects
+	cSolidObjectManager->SetView(view);
+	cSolidObjectManager->SetProjection(projection);
+	cSolidObjectManager->Render();
+
+	// Render the projectiles
+	cProjectileManager->SetView(view);
+	cProjectileManager->SetProjection(projection);
+	cProjectileManager->PreRender();
+	cProjectileManager->Render();
+	cProjectileManager->PostRender();
 }
 
 /**
@@ -974,7 +1123,6 @@ void CScene3D::Render(void)
 		
 
 	glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
-
 	// Render the Terrain
 	cTerrain->SetView(playerView);
 	cTerrain->SetProjection(playerProjection);
@@ -987,12 +1135,12 @@ void CScene3D::Render(void)
 	cEntityManager->SetProjection(playerProjection);
 	cEntityManager->RenderMiniMap();
 
-	
+
 	// Render the entities for the minimap
 	cSolidObjectManager->SetView(playerView);
 	cSolidObjectManager->SetProjection(playerProjection);
 	cSolidObjectManager->Render();
-	
+
 	// Minimap Object Renderer
 	cPlayer3D->GetArrow()->SetView(playerView);
 	cPlayer3D->GetArrow()->SetProjection(playerProjection);
@@ -1002,47 +1150,28 @@ void CScene3D::Render(void)
 
 	// Deactivate the cMinimap so that we can render as per normal
 	CMinimap::GetInstance()->Deactivate();
-	
+
+
+
+
+	// Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS);
+
+	glEnable(GL_CULL_FACE);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	// Part 2: Render the entire scene as per normal
 	// Get the camera view and projection
 	glm::mat4 view = CCamera::GetInstance()->GetViewMatrix();;
 	glm::mat4 projection = glm::perspective(glm::radians(CCamera::GetInstance()->fZoom),
 		(float)cSettings->iWindowWidth / (float)cSettings->iWindowHeight,
 		0.1f, 1000.0f);
-	glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Render the SkyBox
-	cSkyBox->SetView(view);
-	cSkyBox->SetProjection(projection);
-	cSkyBox->PreRender();
-	cSkyBox->Render();
-	cSkyBox->PostRender();
-
-	// Render the Terrain
-	cTerrain->SetView(view);
-	cTerrain->SetProjection(projection);
-	cTerrain->PreRender();
-	cTerrain->Render();
-	cTerrain->PostRender();
-
-	// Render the entities
-	cEntityManager->SetView(view);
-	cEntityManager->SetProjection(projection);
-	cEntityManager->Render();
-
-	// Render the solid objects
-	cSolidObjectManager->SetView(view);
-	cSolidObjectManager->SetProjection(projection);
-	cSolidObjectManager->Render();
-	cSolidObjectManager->Render();
-
-	// Render the projectiles
-	cProjectileManager->SetView(view);
-	cProjectileManager->SetProjection(projection);
-	cProjectileManager->PreRender();
-	cProjectileManager->Render();
-	cProjectileManager->PostRender();
+	
+	RenderPassMain();
 
 	// now draw the mirror quad with screen texture
 	// --------------------------------------------

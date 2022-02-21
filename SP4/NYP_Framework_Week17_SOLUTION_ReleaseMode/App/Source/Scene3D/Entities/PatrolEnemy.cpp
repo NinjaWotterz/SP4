@@ -148,21 +148,22 @@ bool CPatrolEnemy3D::Init(void)
 	iCurrentNumMovement = 0;
 	iMaxNumMovement = 100;
 
-	health = 1 + rand() % 10;
+	health = 1 + rand() % 3;
 	// Detection distance for player
-	fDetectionDistance = 10.0f;
+	fDetectionDistance = 1.0f;
 
 	// Init cWaypointManager
 	cWaypointManager = new CWaypointManager;
 	cWaypointManager->Init();
 
 	// Add in some test Waypoints
-	float fCheckHeight = cTerrain->GetHeight(0.0f, -30.0f);
-	int m_iWayPointID = cWaypointManager->AddWaypoint(glm::vec3(0.0f, fCheckHeight, -30.0f));
-	fCheckHeight = cTerrain->GetHeight(20.0f, -20.0f);
-	m_iWayPointID = cWaypointManager->AddWaypoint(m_iWayPointID, glm::vec3(30.0f, fCheckHeight, 0.0f));
-	fCheckHeight = cTerrain->GetHeight(-20.0f, -30.0f);
-	m_iWayPointID = cWaypointManager->AddWaypoint(m_iWayPointID, glm::vec3(-30.0f, fCheckHeight, 0.0f));
+	float fCheckHeight = cTerrain->GetHeight(vec3Position.x, vec3Position.z)+0.5f;
+
+	int m_iWayPointID = cWaypointManager->AddWaypoint(glm::vec3(vec3Position.x, fCheckHeight, vec3Position.z));
+	fCheckHeight = cTerrain->GetHeight(vec3Position.x+2.5, vec3Position.z) + 0.5f;
+	m_iWayPointID = cWaypointManager->AddWaypoint(m_iWayPointID, glm::vec3(vec3Position.x + 3, fCheckHeight, vec3Position.z));
+	fCheckHeight = cTerrain->GetHeight(vec3Position.x + 0.25, vec3Position.z + 0.5) + 0.5f;
+	m_iWayPointID = cWaypointManager->AddWaypoint(m_iWayPointID, glm::vec3(vec3Position.x + 1.5, fCheckHeight, vec3Position.z + 3));
 
 	cWaypointManager->PrintSelf();
 

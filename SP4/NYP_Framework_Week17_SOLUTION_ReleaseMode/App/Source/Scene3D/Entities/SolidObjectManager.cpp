@@ -12,6 +12,7 @@
 // Include CCameraEffectsManager
 #include "../CameraEffects/CameraEffectsManager.h"
 #include "../Entities/Enemy3D.h"
+#include "../Entities/PatrolEnemy.h"
 #include "../SceneGraph/RobotNode.h"
 #include "../Entities/Item3D.h"
 #include "../Entities/Structure3D.h"
@@ -350,6 +351,14 @@ bool CSolidObjectManager::CheckForCollision(void)
 							(*it)->SetStatus(false);
 						}
 					}
+
+					CPatrolEnemy3D* pEnemy = dynamic_cast<CPatrolEnemy3D*>(*it);
+					if (pEnemy) {
+						pEnemy->ReduceHealth(1);
+						if (pEnemy->IsDead()) {
+							(*it)->SetStatus(false);
+						}
+					}
 					
 					(cProjectileManager->vProjectile[i])->SetStatus(false);
 					cout << "** RayBoxCollision between NPC and Projectile ***" << endl;
@@ -422,6 +431,14 @@ bool CSolidObjectManager::CheckForCollision(void)
 					if (enemy) {
 						enemy->ReduceHealth(1);
 						if (enemy->IsDead()) {
+							(*it)->SetStatus(false);
+						}
+					}
+
+					CPatrolEnemy3D* pEnemy = dynamic_cast<CPatrolEnemy3D*>(*it);
+					if (pEnemy) {
+						pEnemy->ReduceHealth(1);
+						if (pEnemy->IsDead()) {
 							(*it)->SetStatus(false);
 						}
 					}

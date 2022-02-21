@@ -260,6 +260,12 @@
     <ClCompile Include="Source\Scene3D\Entities\Ceiling.cpp">
       <Filter>Scene3D\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene3D\DepthFBO.cpp">
+      <Filter>Scene3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3D\MatrixStack.cpp">
+      <Filter>Scene3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -468,6 +474,15 @@
     </ClInclude>
     <ClInclude Include="Source\Scene3D\Entities\Ceiling.h">
       <Filter>Scene3D\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\Light.h">
+      <Filter>Scene3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\DepthFBO.h">
+      <Filter>Scene3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D\MatrixStack.h">
+      <Filter>Scene3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

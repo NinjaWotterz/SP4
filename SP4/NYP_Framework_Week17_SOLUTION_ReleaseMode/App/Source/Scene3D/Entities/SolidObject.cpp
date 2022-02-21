@@ -156,7 +156,7 @@ void CSolidObject::Render(void)
 		CCollider::colliderModel = CEntity3D::model;
 		CCollider::colliderView = CEntity3D::view;
 		CCollider::colliderProjection = CEntity3D::projection;
-		CCollider::PreRender();
+		//CCollider::PreRender();
 		CCollider::Render();
 		CCollider::PostRender();
 	}

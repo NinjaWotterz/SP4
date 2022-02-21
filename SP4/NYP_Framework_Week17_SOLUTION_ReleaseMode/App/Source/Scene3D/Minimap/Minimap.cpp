@@ -152,6 +152,7 @@ void CMinimap::Activate(void)
 	// Clear the framebuffer's content and display a pale green background
 	glClearColor(0.0f, 0.5f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	FOG_DENSITY = 0.f;
 }
 
 /**
@@ -161,6 +162,7 @@ void CMinimap::Deactivate(void)
 {
 	// Stop rendering the framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	FOG_DENSITY = 0.1f;
 }
 
 /**

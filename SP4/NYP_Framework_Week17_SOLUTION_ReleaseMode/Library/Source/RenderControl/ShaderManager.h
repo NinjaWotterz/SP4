@@ -23,6 +23,7 @@ public:
 	void Remove(const std::string& _name);
 	void Use(const std::string& _name);
 	bool Check(const std::string& _name);
+	unsigned int GetProgramID(const std::string& _name);
 
 	// The current active shader
 	CShader* activeShader;

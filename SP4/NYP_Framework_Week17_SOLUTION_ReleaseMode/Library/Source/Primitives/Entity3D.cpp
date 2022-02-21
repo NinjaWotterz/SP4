@@ -11,6 +11,7 @@
 #include <iostream>
 using namespace std;
 
+float CEntity3D::FOG_DENSITY = 10000.f;
 /**
 @brief Default Constructor
 */

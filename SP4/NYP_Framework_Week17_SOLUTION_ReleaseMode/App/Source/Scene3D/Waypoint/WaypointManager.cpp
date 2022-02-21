@@ -12,7 +12,7 @@ using namespace std;
  */
 CWaypointManager::CWaypointManager(void)
 	: m_iCurrentID(-1)
-	, m_fDistanceTolerance(16.0f)	// We set the tolerance to 4.0 units squared == 16.0 units
+	, m_fDistanceTolerance(0.01f)	// We set the tolerance to 4.0 units squared == 16.0 units
 {
 	// Initialise this class
 	Init();

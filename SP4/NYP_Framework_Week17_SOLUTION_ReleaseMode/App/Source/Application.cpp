@@ -236,7 +236,9 @@ bool Application::Init(void)
 	CShaderManager::GetInstance()->Add("Shader3D_Instancing", "Shader//Instancing.vs", "Shader//Instancing.fs");
 	CShaderManager::GetInstance()->Add("Shader3D_Terrain", "Shader//Terrain.vs", "Shader//Terrain.fs");
 	CShaderManager::GetInstance()->Add("Shader3D_3DTree", "Shader//3DTree.vs", "Shader//3DTree.fs");
+	CShaderManager::GetInstance()->Add("Shader3D_GPass", "Shader//GPass.vertexshader", "Shader//GPass.fragmentshader");
 	CShaderManager::GetInstance()->Add("Shader3D_Shadow", "Shader//Shadow.vertexshader", "Shader//Shadow.fragmentshader");
+	CShaderManager::GetInstance()->Add("Shader3D_ShadowInstance", "Shader//ShadowInstance.vs", "Shader//ShadowInstance.fs");
 
 	// Initialise the CFPSCounter instance
 	cFPSCounter = CFPSCounter::GetInstance();
