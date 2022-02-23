@@ -50,6 +50,7 @@
 
 // Include CCameraShake
 #include "CameraEffects/CameraShake.h"
+#include "CameraEffects/CameraShake2.h"
 #include "CameraEffects/CameraRecoil.h"
 
 #include <iostream>
@@ -657,6 +658,11 @@ bool CScene3D::Update(const double dElapsedTime)
 			playerMoved = true;
 			camera180 = true;
 		}
+		if (playerMoved == false)
+		{
+			((CCameraShake2*)CCameraEffectsManager::GetInstance()->Get("CameraShake2"))->bToBeUpdated = true;
+		}
+
 	}
 	if (playerMoved == true)
 	{
@@ -699,7 +705,7 @@ bool CScene3D::Update(const double dElapsedTime)
 			cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::CAMERA180, (float)dElapsedTime);
 		}
 	}
-
+	
 	if (playerMoved) {
 		minimapZoom += dElapsedTime * 20;
 	}
@@ -976,14 +982,14 @@ bool CScene3D::Update(const double dElapsedTime)
 			if (cCamera->GetZoomState() == true)
 			{
 				cPlayer3D->DischargeWeapon();
-				((CCameraRecoil*)CCameraEffectsManager::GetInstance()->Get("CameraRecoil"))->bToBeUpdated = true;
+				//((CCameraRecoil*)CCameraEffectsManager::GetInstance()->Get("CameraRecoil"))->bToBeUpdated = true;
 				cSoundController->PlaySoundByID(2);
 			}
 		}
 		else
 		{
 			cPlayer3D->DischargeWeapon();
-			((CCameraRecoil*)CCameraEffectsManager::GetInstance()->Get("CameraRecoil"))->bToBeUpdated = true;
+			//((CCameraRecoil*)CCameraEffectsManager::GetInstance()->Get("CameraRecoil"))->bToBeUpdated = true;
 			cSoundController->PlaySoundByID(2);
 		}
 	}

@@ -13,6 +13,7 @@
 #include "CameraEffects/CrossHair.h"
 // Include CCameraShake
 #include "CameraEffects/CameraShake.h"
+#include "CameraEffects/CameraShake2.h"
 #include "CameraEffects/CameraRecoil.h"
 #include "Entities\EntityManager.h"
 #include "Entities\SolidObjectManager.h"
@@ -115,6 +116,11 @@ bool CGUI_Scene3D::Init(void)
 	CCameraShake* cCameraShake = new CCameraShake();
 	cCameraShake->Init();
 	cCameraEffectsManager->Add("CameraShake", cCameraShake);
+
+	// Add CameraShake2
+	CCameraShake2* cCameraShake2 = new CCameraShake2();
+	cCameraShake2->Init();
+	cCameraEffectsManager->Add("CameraShake2", cCameraShake2);
 
 	// Load the Minimap
 	cMinimap = CMinimap::GetInstance();
