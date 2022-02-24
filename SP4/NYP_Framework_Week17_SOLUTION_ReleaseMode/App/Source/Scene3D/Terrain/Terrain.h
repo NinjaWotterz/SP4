@@ -28,7 +28,7 @@ class CTerrain : public CSingletonTemplate<CTerrain>, public CEntity3D
 	friend CSingletonTemplate<CTerrain>;
 public:
 	// Initialise this class instance
-	bool Init(void);
+	bool Init(std::string gameFileName);
 
 	// Set model
 	virtual void SetModel(const glm::mat4 model);
@@ -80,7 +80,7 @@ protected:
 	~CTerrain(void);
 
 	unsigned int uiVAO;
-
+	std::string gameLevel;
 	bool bLoaded;
 	bool bShaderProgramLoaded;
 	int iRows;

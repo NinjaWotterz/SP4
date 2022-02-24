@@ -151,15 +151,15 @@ void CSolidObject::Render(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// Render the CCollider if needed
-	if (this->bIsDisplayed)
-	{
-		CCollider::colliderModel = CEntity3D::model;
-		CCollider::colliderView = CEntity3D::view;
-		CCollider::colliderProjection = CEntity3D::projection;
-		CCollider::PreRender();
-		CCollider::Render();
-		CCollider::PostRender();
-	}
+	//if (this->bIsDisplayed)
+	//{
+	//	CCollider::colliderModel = CEntity3D::model;
+	//	CCollider::colliderView = CEntity3D::view;
+	//	CCollider::colliderProjection = CEntity3D::projection;
+	//	CCollider::PreRender();
+	//	CCollider::Render();
+	//	CCollider::PostRender();
+	//}
 }
 
 /**

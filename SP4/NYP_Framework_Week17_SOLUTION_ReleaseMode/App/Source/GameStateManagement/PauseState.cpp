@@ -67,11 +67,13 @@ bool CPauseState::Init(void)
 
 	// Load the images for buttons
 	CImageLoader* il = CImageLoader::GetInstance();
-	VolumeIncreaseButtonData.fileName = "Image\\GUI\\VolumeIncreaseButton.png";
+	VolumeIncreaseButtonData.fileName = "Image\\GUI\\buttonVolumeUp.png";
 	VolumeIncreaseButtonData.textureID = il->LoadTextureGetID(VolumeIncreaseButtonData.fileName.c_str(), false);
-	VolumeDecreaseButtonData.fileName = "Image\\GUI\\VolumeDecreaseButton.png";
+	VolumeDecreaseButtonData.fileName = "Image\\GUI\\buttonVolumeDown.png";
 	VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);
-
+	// Enable the cursor
+	if (CSettings::GetInstance()->bDisableMousePointer == true)
+		glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	return true;
 }
 
@@ -128,6 +130,7 @@ bool CPauseState::Update(const double dElapsedTime)
 
 			CSoundController::GetInstance()->MasterVolumeDecrease();
 		}
+
 	ImGui::End();
 	}
 

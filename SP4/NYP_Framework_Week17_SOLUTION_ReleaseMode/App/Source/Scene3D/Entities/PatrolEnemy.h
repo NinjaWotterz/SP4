@@ -105,6 +105,7 @@ public:
 
 	void ReduceHealth(int damage);
 	bool IsDead();
+	//void SetTarget(CEntity3D* target);
 protected:
 	// Enemy Attributes
 	glm::vec3 vec3Up;

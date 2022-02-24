@@ -58,7 +58,7 @@ bool CHut_Concrete::Init(void)
 	CSolidObject::Init();
 
 	// Set the type
-	SetType(CEntity3D::TYPE::STRUCTURE);
+	SetType(CEntity3D::TYPE::PORTAL);
 
 	if (m_bLODStatus == false)
 	{

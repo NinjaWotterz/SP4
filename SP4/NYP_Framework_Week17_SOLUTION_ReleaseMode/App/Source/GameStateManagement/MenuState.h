@@ -20,14 +20,9 @@
 #include "GUI\imgui.h"
 #include "GUI\backends\imgui_impl_glfw.h"
 #include "GUI\backends\imgui_impl_opengl3.h"
+#include "buttonData.h"
 #define IMGUI_ACTIVE
 #endif
-
-struct ButtonData
-{
-	std::string fileName;
-	unsigned textureID;
-};
 
 class CMenuState : public CGameStateBase
 {
@@ -50,5 +45,8 @@ protected:
 	CBackgroundEntity* background;
 	ButtonData startButtonData;
 	ButtonData play3DButtonData;
+	ButtonData settingButtonData;
+	ButtonData aboutButtondata;
+	ButtonData creditButtondata;
 	ButtonData exitButtonData;
 };

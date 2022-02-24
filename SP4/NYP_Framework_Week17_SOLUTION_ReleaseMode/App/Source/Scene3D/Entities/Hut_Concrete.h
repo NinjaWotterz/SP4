@@ -38,7 +38,7 @@ public:
 
 	// Initialise this class instance
 	bool Init(void);
-
+	
 	// Load a model and texture
 	bool LoadModelAndTexture(	const char* filenameModel, 
 								const char* filenameTexture, 
@@ -65,4 +65,5 @@ public:
 
 	// Print Self
 	virtual void PrintSelf(void);
+	std::string nextLevelState;
 };

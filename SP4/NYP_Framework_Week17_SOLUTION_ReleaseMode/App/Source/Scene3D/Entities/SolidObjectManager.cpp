@@ -16,6 +16,8 @@
 #include "../Entities/Item3D.h"
 #include "../Entities/Structure3D.h"
 #include "../GUI_Scene3D.h"
+#include "../Entities/Hut_Concrete.h"
+#include "../../GameStateManagement/GameStateManager.h"
 #include <iostream>
 using namespace std;
 
@@ -228,19 +230,21 @@ bool CSolidObjectManager::CheckForCollision(void)
 				{
 					(*it)->RollbackPosition();
 					CPlayer3D* p = dynamic_cast<CPlayer3D*>(*it);
-					
-
-					if ((*it_other)->GetType() < CSolidObject::TYPE::BOSS) {
+				
+					if ((*it_other)->GetType() <= CSolidObject::TYPE::BOSS) {
 						(*it_other)->RollbackPosition();
-						p->HitPlayer((*it_other)->GetPosition());
+						
+						if ((*it_other)->GetType() == CSolidObject::TYPE::GHOST)
+						{
+							p->HitPlayer((*it_other)->GetPosition(),10);
+							(*it_other)->SetStatus(false);
+						}
+						else
+							p->HitPlayer((*it_other)->GetPosition(),5);
 					}
-					else if((*it_other)->GetType() == CSolidObject::TYPE::BOSS){
-						p->HitPlayer((*it_other)->GetPosition(), 10);
-					}
-					
-					if ((*it_other)->GetType() >= CSolidObject::TYPE::NPC) {
+					/*if ((*it_other)->GetType() >= CSolidObject::TYPE::NPC) {
 						bResult = true;
-					}
+					}*/
 					
 					cout << "** Collision between Player and an Entity ***" << endl;
 					(*it)->PrintSelf();
@@ -292,11 +296,21 @@ bool CSolidObjectManager::CheckForCollision(void)
 						(((*it)->GetType() >= CSolidObject::TYPE::PLAYER) &&
 							((*it)->GetType() <= CSolidObject::TYPE::OTHERS))
 						&&
-						((*it_other)->GetType() == CSolidObject::TYPE::STRUCTURE || (*it_other)->GetType() == CSolidObject::TYPE::TOWER)
+						((*it_other)->GetType() == CSolidObject::TYPE::STRUCTURE || (*it_other)->GetType() == CSolidObject::TYPE::TOWER || (*it_other)->GetType() == CSolidObject::TYPE::PORTAL)
 					)
 				{
+					//CGameStateManager::GetInstance()->SetActiveGameState("IntroState");
 					if ((*it)->GetType() < CSolidObject::TYPE::BOSS) {
 						(*it)->RollbackPosition();
+					}
+
+					if ((*it)->GetType() >= CSolidObject::TYPE::PLAYER && (*it_other)->GetType() == CSolidObject::TYPE::PORTAL) {
+						CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+						CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Crystal");
+						if (cInventoryItem->GetCount() == cInventoryItem->GetMaxCount()) {
+							CHut_Concrete* cHut_Concrete = dynamic_cast<CHut_Concrete*>(*it_other);
+							CGameStateManager::GetInstance()->SetActiveGameState(cHut_Concrete->nextLevelState);
+						}
 					}
 					//(*it)->RollbackPosition();
 					/*if (((*it)->GetType() == CSolidObject::TYPE::PLAYER))
@@ -497,6 +511,25 @@ void CSolidObjectManager::Render(void)
 	for (it = lSolidObject.begin(); it != end; ++it)
 	{
 		if (!(*it)->GetStatus()) continue;
+		(*it)->SetView(view);
+		(*it)->SetProjection(projection);
+		(*it)->PreRender();
+		(*it)->Render();
+		(*it)->PostRender();
+	}
+}
+
+void CSolidObjectManager::RenderMiniMap(void) {
+	// Render all entities
+	std::list<CSolidObject*>::iterator it, end;
+	end = lSolidObject.end();
+	for (it = lSolidObject.begin(); it != end; ++it)
+	{
+		if (!(*it)->GetStatus()) continue;
+		CEntity3D::TYPE objType = (*it)->GetType();
+		if (objType == CEntity3D::ITEM || (objType >= CEntity3D::GHOST && objType <= CEntity3D::ZOMBIE)) {
+			continue;
+		}
 		(*it)->SetView(view);
 		(*it)->SetProjection(projection);
 		(*it)->PreRender();

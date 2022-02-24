@@ -195,9 +195,6 @@ bool CPlayer3D::Init(void)
 	cArrow->Init();
 	cArrow->SetShader("Shader3D");
 	
-	health = 3;
-	active = true;
-	
 	return true;
 }
 
@@ -272,14 +269,14 @@ bool CPlayer3D::IsCameraAttached(void)
 void CPlayer3D::HitPlayer(glm::vec3 enemyPos, int damage) {
 	if (invulnerableTime <= 0.f) {
 		enemyPos.y = vec3Position.y;
-		glm::vec3 pushBack = glm::normalize(vec3Position - enemyPos);
-		pushBack.y = 3.f;
-		pushBack *= 1;
-		cPhysics3D.SetStatus(CPhysics3D::STATUS::JUMP);
-		cPhysics3D.SetInitialVelocity(pushBack);
+		//glm::vec3 pushBack = glm::normalize(vec3Position - enemyPos);
+		//pushBack *= 1.8;
+		//pushBack.y = 1.5f;
+		//cPhysics3D.SetStatus(CPhysics3D::STATUS::JUMP);
+		//cPhysics3D.SetInitialVelocity(pushBack);
 		invulnerableTime = 2.f;
 		CSoundController* cSoundController = CSoundController::GetInstance();
-		cSoundController->PlaySoundByID(2);
+		//cSoundController->PlaySoundByID(2);
 		CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
 		CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(damage);
@@ -293,7 +290,7 @@ void CPlayer3D::CollectItem(CItem3D* item) {
 	if (item->GetItemType() == CItem3D::ITEMTYPE::CRYSTAL) {
 		CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
 		CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Crystal");
-		cInventoryItem->Add(1);
+		cInventoryItem->Add(5);
 	}
 }
 
@@ -443,9 +440,25 @@ void CPlayer3D::ProcessMovement(const PLAYERMOVEMENT direction, const float delt
 	if (direction == PLAYERMOVEMENT::BACKWARD)
 		vec3Position -= forward * velocity;
 	if (direction == PLAYERMOVEMENT::LEFT)
+	{
 		vec3Position -= right * velocity;
+	}
 	if (direction == PLAYERMOVEMENT::RIGHT)
+	{
 		vec3Position += right * velocity;
+	}
+	if (direction == PLAYERMOVEMENT::CAMERALEFT)
+	{
+		ProcessRotate((float)-900.0f, (float)0.0f);
+	}
+	if (direction == PLAYERMOVEMENT::CAMERARIGHT)
+	{
+		ProcessRotate((float)900.0f, (float)0.0f);
+	}
+	if (direction == PLAYERMOVEMENT::CAMERA180)
+	{
+		ProcessRotate((float)1800.0f, (float)0.0f);
+	}
 
 	//float newHeight = cTerrain->GetHeight(vec3Position.x, vec3Position.z) + fHeightOffset;
 	//if (newHeight >= 11.f) {
@@ -712,21 +725,4 @@ void CPlayer3D::PrintSelf(void)
 {
 	cout << "CPlayer3D::PrintSelf()" << endl;
 	cout << "========================" << endl;
-}
-
-int CPlayer3D::GetHP()
-{
-	return health;
-}
-void CPlayer3D::SetHP(int dif)
-{
-	health += dif;
-}
-bool CPlayer3D::GetActive()
-{
-	return active;
-}
-void CPlayer3D::SetActive(bool at)
-{
-	active = at;
 }

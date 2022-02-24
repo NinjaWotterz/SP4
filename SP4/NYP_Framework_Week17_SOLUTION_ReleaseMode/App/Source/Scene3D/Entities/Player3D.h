@@ -46,6 +46,9 @@ public:
 		BACKWARD,
 		LEFT,
 		RIGHT,
+		CAMERALEFT,
+		CAMERARIGHT,
+		CAMERA180,
 		NUM_MOVEMENTS
 	};
 
@@ -152,14 +155,6 @@ protected:
 	bool bCameraSwayDirection; // false = left, true = right
 	bool bCameraSwayActive;
 	bool bUpdateCameraSway;
-	
-	// Hp
-	int health;
-	bool active;
-	int GetHP();
-	void SetHP(int dif);
-	bool GetActive();
-	void SetActive(bool at);
 
 	float invulnerableTime;
 	// Physics

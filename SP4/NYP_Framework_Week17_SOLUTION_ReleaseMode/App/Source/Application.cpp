@@ -42,7 +42,12 @@ using namespace std;
 #include "GameStateManagement/Play3DGameState.h"
 // Include CPauseState
 #include "GameStateManagement/PauseState.h"
-
+//Include COptionState
+#include "GameStateManagement/OptionState.h"
+//Include CAboutState
+#include "GameStateManagement/AboutState.h"
+//Include CCreditState
+#include "GameStateManagement/CreditState.h"
 /**
  @brief Define an error callback
  @param error The error code
@@ -236,7 +241,9 @@ bool Application::Init(void)
 	CShaderManager::GetInstance()->Add("Shader3D_Instancing", "Shader//Instancing.vs", "Shader//Instancing.fs");
 	CShaderManager::GetInstance()->Add("Shader3D_Terrain", "Shader//Terrain.vs", "Shader//Terrain.fs");
 	CShaderManager::GetInstance()->Add("Shader3D_3DTree", "Shader//3DTree.vs", "Shader//3DTree.fs");
+	CShaderManager::GetInstance()->Add("Shader3D_GPass", "Shader//GPass.vertexshader", "Shader//GPass.fragmentshader");
 	CShaderManager::GetInstance()->Add("Shader3D_Shadow", "Shader//Shadow.vertexshader", "Shader//Shadow.fragmentshader");
+	CShaderManager::GetInstance()->Add("Shader3D_ShadowInstance", "Shader//ShadowInstance.vs", "Shader//ShadowInstance.fs");
 
 	// Initialise the CFPSCounter instance
 	cFPSCounter = CFPSCounter::GetInstance();
@@ -246,8 +253,13 @@ bool Application::Init(void)
 	CGameStateManager::GetInstance()->AddGameState("IntroState", new CIntroState());
 	CGameStateManager::GetInstance()->AddGameState("MenuState", new CMenuState());
 	CGameStateManager::GetInstance()->AddGameState("PlayGameState", new CPlayGameState());
-	CGameStateManager::GetInstance()->AddGameState("Play3DGameState", new CPlay3DGameState());
+	CGameStateManager::GetInstance()->AddGameState("Play3DGameState", new CPlay3DGameState("terrain_test1"));
 	CGameStateManager::GetInstance()->AddGameState("PauseState", new CPauseState());
+	CGameStateManager::GetInstance()->AddGameState("OptionState", new COptionState());
+	CGameStateManager::GetInstance()->AddGameState("AboutState", new CAboutState());
+	CGameStateManager::GetInstance()->AddGameState("CreditState", new CCreditState());
+	CGameStateManager::GetInstance()->AddGameState("Play3DLevel2", new CPlay3DGameState("terrain_test2"));
+	//CGameStateManager::GetInstance()->AddGameState("PlayLevel3", new CPlay3DGameState(3));
 
 	// Set the active scene
 	CGameStateManager::GetInstance()->SetActiveGameState("IntroState");

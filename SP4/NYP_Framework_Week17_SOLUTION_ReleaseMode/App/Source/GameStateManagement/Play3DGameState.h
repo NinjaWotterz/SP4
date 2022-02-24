@@ -14,8 +14,9 @@
 class CPlay3DGameState : public CGameStateBase
 {
 public:
+	
 	// Constructor
-	CPlay3DGameState(void);
+	CPlay3DGameState(std::string stateGameLevel);
 	// Destructor
 	~CPlay3DGameState(void);
 
@@ -31,4 +32,5 @@ public:
 protected:
 	// The handler to the CScene3D instance
 	CScene3D* CScene3D;
+	std::string gameLevel;
 };

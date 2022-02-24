@@ -51,6 +51,7 @@ public:
 
 	// Render this class instance
 	virtual void Render(void);
+	virtual void RenderMiniMap(void);
 	virtual bool CheckAndDestroyTargets(void);
 	virtual bool CheckTowerAlive(void);
 	virtual int GetTargetsLeft(void);

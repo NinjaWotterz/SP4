@@ -28,6 +28,7 @@ using namespace std;
 class CEntity3D
 {
 public:
+	static float FOG_DENSITY;
 	enum TYPE
 	{
 		PLAYER = 0,
@@ -38,10 +39,26 @@ public:
 		CEILING,
 		ITEM,
 		STRUCTURE,	// Buildings etc
+		PORTAL,
 		TOWER,
 		PROJECTILE,
 		CRYSTAL,
+		GHOST,
+		STATUE,
+		ZOMBIE,
 		NUM_TYPES
+	};
+
+	enum UNIFORM_TYPE
+	{
+		U_FOG_COLOR,
+		U_FOG_START,
+		U_FOG_END,
+		U_FOG_DENSITY,
+		U_FOG_TYPE,
+		U_FOG_ENABLED,
+
+		U_TOTAL,
 	};
 
 	// Constructor(s)
@@ -158,4 +175,6 @@ protected:
 
 	// Boolean flag to indicate if this CEntity3D is to be deleted
 	bool bToDelete;
+
+	unsigned int m_parameters[U_TOTAL];
 };

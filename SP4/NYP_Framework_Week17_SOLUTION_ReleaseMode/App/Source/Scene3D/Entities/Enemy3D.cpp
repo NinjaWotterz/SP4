@@ -138,7 +138,7 @@ bool CEnemy3D::Init(void)
 	std::vector<ModelVertex> vertex_buffer_data;
 	std::vector<GLuint> index_buffer_data;
 
-	std::string file_path = "Models/Enemy/enemy.obj";
+	std::string file_path = "Models/crate/crate.obj";
 	bool success = CLoadOBJ::LoadOBJ(file_path.c_str(), vertices, uvs, normals, true);
 	if (!success)
 	{
@@ -164,10 +164,10 @@ bool CEnemy3D::Init(void)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	// load and create a texture 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Models/Enemy/enemy.tga", false);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Models/crate/WoodenCrate.png", false);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Models/Enemy/enemy.tga" << endl;
+		cout << "Unable to load Models/crate/WoodenCrate.png" << endl;
 		return false;
 	}
 

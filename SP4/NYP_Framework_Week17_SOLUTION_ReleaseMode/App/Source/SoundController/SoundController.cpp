@@ -10,6 +10,8 @@ CSoundController::CSoundController(void)
 	: cSoundEngine(NULL)
 	, vec3dfListenerPos(vec3df(0, 0, 0))
 	, vec3dfListenerDir(vec3df(0, 0, 1))
+	, fCurrentVolume(0)
+	, mute(0)
 {
 }
 
@@ -112,29 +114,32 @@ bool CSoundController::LoadSound(	string filename,
  */
 void CSoundController::PlaySoundByID(const int ID)
 {
-	CSoundInfo* pSoundInfo = GetSound(ID);
-	if (!pSoundInfo)
+	if (!GetMute())
 	{
-		cout << "Sound #" << ID << " is not playable." << endl;
-		return;
-	}
-	else if (cSoundEngine->isCurrentlyPlaying(pSoundInfo->GetSound()))
-	{
-		cout << "Sound #" << ID << " is currently being played." << endl;
-		return;
-	}
+		CSoundInfo* pSoundInfo = GetSound(ID);
+		if (!pSoundInfo)
+		{
+			cout << "Sound #" << ID << " is not playable." << endl;
+			return;
+		}
+		else if (cSoundEngine->isCurrentlyPlaying(pSoundInfo->GetSound()))
+		{
+			cout << "Sound #" << ID << " is currently being played." << endl;
+			return;
+		}
 
-	if (pSoundInfo->GetSoundType() == CSoundInfo::SOUNDTYPE::_2D)
-	{
-		cSoundEngine->play2D(	pSoundInfo->GetSound(), 
-								pSoundInfo->GetLoopStatus());
-	}
-	else if (pSoundInfo->GetSoundType() == CSoundInfo::SOUNDTYPE::_3D)
-	{
-		cSoundEngine->setListenerPosition(vec3dfListenerPos, vec3dfListenerDir);
-		cSoundEngine->play3D(	pSoundInfo->GetSound(), 
-								pSoundInfo->GetPosition(), 
-								pSoundInfo->GetLoopStatus());
+		if (pSoundInfo->GetSoundType() == CSoundInfo::SOUNDTYPE::_2D)
+		{
+			cSoundEngine->play2D(pSoundInfo->GetSound(),
+				pSoundInfo->GetLoopStatus());
+		}
+		else if (pSoundInfo->GetSoundType() == CSoundInfo::SOUNDTYPE::_3D)
+		{
+			cSoundEngine->setListenerPosition(vec3dfListenerPos, vec3dfListenerDir);
+			cSoundEngine->play3D(pSoundInfo->GetSound(),
+				pSoundInfo->GetPosition(),
+				pSoundInfo->GetLoopStatus());
+		}
 	}
 }
 
@@ -145,7 +150,7 @@ void CSoundController::PlaySoundByID(const int ID)
 bool CSoundController::MasterVolumeIncrease(void)
 {
 	// Get the current volume
-	float fCurrentVolume = cSoundEngine->getSoundVolume() + 0.1f;
+	fCurrentVolume = cSoundEngine->getSoundVolume() + 0.1f;
 	cout << "MasterVolumeIncrease: fCurrentVolume = " << fCurrentVolume << endl;
 	// Check if the maximum volume has been reached
 	if (fCurrentVolume > 1.0f)
@@ -164,7 +169,7 @@ bool CSoundController::MasterVolumeIncrease(void)
 bool CSoundController::MasterVolumeDecrease(void)
 {
 	// Get the current volume
-	float fCurrentVolume = cSoundEngine->getSoundVolume() - 0.1f;
+	 fCurrentVolume = cSoundEngine->getSoundVolume() - 0.1f;
 	cout << "MasterVolumeDecrease: fCurrentVolume = " << fCurrentVolume << endl;
 	// Check if the minimum volume has been reached
 	if (fCurrentVolume < 0.0f)
@@ -192,7 +197,7 @@ bool CSoundController::VolumeIncrease(const int ID)
 	}
 
 	// Get the current volume
-	float fCurrentVolume = pISoundSource->getDefaultVolume();
+	fCurrentVolume = pISoundSource->getDefaultVolume();
 
 	// Check if the maximum volume has been reached
 	if (fCurrentVolume >= 1.0f)
@@ -222,7 +227,7 @@ bool CSoundController::VolumeDecrease(const int ID)
 	}
 
 	// Get the current volume
-	float fCurrentVolume = pISoundSource->getDefaultVolume();
+	fCurrentVolume = pISoundSource->getDefaultVolume();
 
 	// Check if the minimum volume has been reached
 	if (fCurrentVolume <= 0.0f)
@@ -258,6 +263,26 @@ void CSoundController::SetListenerPosition(const float x, const float y, const f
 void CSoundController::SetListenerDirection(const float x, const float y, const float z)
 {
 	vec3dfListenerDir.set(x, y, z);
+}
+
+float CSoundController::GetfCurrentVolume()
+{
+	return fCurrentVolume;
+}
+
+void CSoundController::SetfCurrentVolume(float volume)
+{
+	fCurrentVolume = volume;
+}
+
+bool CSoundController::GetMute()
+{
+	return mute;
+}
+
+void CSoundController::SetMute(bool muted)
+{
+	mute = muted;
 }
 
 /**

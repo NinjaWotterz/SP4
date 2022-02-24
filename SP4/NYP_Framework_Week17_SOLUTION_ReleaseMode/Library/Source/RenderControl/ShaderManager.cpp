@@ -111,3 +111,8 @@ bool CShaderManager::Check(const std::string& _name)
 {
 	return shaderMap.count(_name) != 0;
 }
+
+unsigned int CShaderManager::GetProgramID(const std::string& _name)
+{
+	return shaderMap[_name]->ID;
+}

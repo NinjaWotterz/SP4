@@ -302,6 +302,23 @@ void CWalls3D::PreRender(void)
 */
 void CWalls3D::Render(void)
 {
+	unsigned int m_programID = CShaderManager::GetInstance()->GetProgramID("Shader3D_ShadowInstance");
+	m_parameters[U_FOG_COLOR] = glGetUniformLocation(m_programID, "fogParam.color");
+	m_parameters[U_FOG_START] = glGetUniformLocation(m_programID, "fogParam.start");
+	m_parameters[U_FOG_END] = glGetUniformLocation(m_programID, "fogParam.end");
+	m_parameters[U_FOG_DENSITY] = glGetUniformLocation(m_programID, "fogParam.density");
+	m_parameters[U_FOG_TYPE] = glGetUniformLocation(m_programID, "fogParam.type");
+	m_parameters[U_FOG_ENABLED] = glGetUniformLocation(m_programID, "fogParam.enabled");
+
+	glm::vec3 fogColor(0.8f, 0.8f, 0.8f);
+
+	glUniform3fv(m_parameters[U_FOG_COLOR], 1, &fogColor.r);
+	glUniform1f(m_parameters[U_FOG_START], 100.f);
+	glUniform1f(m_parameters[U_FOG_END], 1000.f);
+	glUniform1f(m_parameters[U_FOG_DENSITY], FOG_DENSITY);
+	glUniform1i(m_parameters[U_FOG_TYPE], 1);
+	glUniform1i(m_parameters[U_FOG_ENABLED], 1);
+
 	if (bInstancedRendering)
 	{
 		// configure transformation matrices

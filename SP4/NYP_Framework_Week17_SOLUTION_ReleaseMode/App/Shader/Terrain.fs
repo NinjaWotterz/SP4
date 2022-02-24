@@ -4,11 +4,42 @@ smooth in vec2 vTexCoord;
 smooth in vec3 vNormal;
 smooth in vec3 vWorldPos;
 smooth in vec4 vEyeSpacePos;
+in vec3 vertexPosition_cameraspace;
+
+struct FogParam
+{
+	vec3 color;		// Fog color
+	float start;	// For linear fog
+	float end;		// For linear fog
+	float density;	// For exponential fog
+	int type;		// 0 = linear, 1 = exp, 2 = exp2
+	bool enabled;	// Toggle fog
+};
+
+float getFogFactor(FogParam fog, float fogDistance)
+{
+	if(fog.enabled == false)
+		return 0.0;
+
+	float factor = 0.0;
+	if(fog.type == 0) 
+		factor = (fog.end - fogDistance) / (fog.end - fog.start); 
+	else if(fog.type == 1) 
+		factor = exp(- fog.density * fogDistance); 
+	else if(fog.type == 2) 
+		factor = exp(- pow(fog.density * fogDistance, 2.0) ); 
+       
+	factor = 1.0 - clamp(factor, 0.0, 1.0); 
+    
+	return factor;
+}
+
 
 uniform sampler2D gSampler[5];
 uniform sampler2D shadowMap;
 
 uniform vec4 vColor;
+uniform FogParam fogParam;
 
 //#include "dirLight.frag"
 //uniform DirectionalLight sunLight;
@@ -70,6 +101,13 @@ void main()
 
 	vec4 vMixedColor = vFinalTexColor*vColor;
 	//vec4 vDirLightColor = GetDirectionalLightColor(sunLight, vNormal);
+
+	if(fogParam.enabled)
+	{
+		float fogDistance = abs(vertexPosition_cameraspace.z);
+		float fogFactor = getFogFactor(fogParam, fogDistance);
+		vMixedColor.xyz = mix(vMixedColor.xyz, fogParam.color, fogFactor);
+	}
 
 	outputColor = vMixedColor;//*(vDirLightColor);
   

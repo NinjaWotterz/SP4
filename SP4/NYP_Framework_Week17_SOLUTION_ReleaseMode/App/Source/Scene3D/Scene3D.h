@@ -51,6 +51,10 @@
 // Include CEntityManager
 #include "Entities\EntityManager.h"
 
+#include "Light.h"
+#include "DepthFBO.h"
+#include "MatrixStack.h"
+
 class CSettings;
 
 class CScene3D : public CSingletonTemplate<CScene3D>
@@ -121,10 +125,15 @@ class CScene3D : public CSingletonTemplate<CScene3D>
 		U_TEXT_COLOR,
 		U_TOTAL,
 	};
+	enum RENDER_PASS
+	{
+		RENDER_PASS_PRE,
+		RENDER_PASS_MAIN,
+	};
 
 public:
 	// Init
-	bool Init(void);
+	bool Init(std::string gameFileName);
 
 	// Update
 	bool Update(const double dElapsedTime);
@@ -146,6 +155,11 @@ public:
 	CFlyingObstacle* SpawnFlyingObstacle(glm::vec3 pos, CFlyingObstacle::PATROLMOVEMENT pm);
 	void CScene3D::SpawnBoss();
 	void CScene3D::SpawnTower();
+
+	void RenderPassGPass();
+	void RenderPassMain();
+	void RenderWorld();
+
 protected:
 	// The handler to the CSettings
 	CSettings* cSettings;
@@ -189,17 +203,30 @@ protected:
 	// Handler to the EntityManager class
 	CEntityManager* cEntityManager;
 
+	Light lights[2];
+
 	CStructure3D* tower;
 	glm::vec3 repawnPosition;
 
 	unsigned m_parameters[U_TOTAL];
 	unsigned int m_programID;
+	unsigned int m_gPassShaderID;
 
 	std::vector<CEnemy3D*> enemyList;
 	std::vector<CItem3D*> itemList;
 	std::vector<CFlyingObstacle*> obstacleList;
 	double spawnTimer;
 	double minimapZoom;
+
+	DepthFBO m_lightDepthFBO;
+	glm::mat4 m_lightDepthProj;
+	glm::mat4 m_lightDepthView;
+	RENDER_PASS m_renderPass;
+	MS modelStack;
+	MS viewStack;
+	MS projectionStack;
+
+	std::string gameLevel;
 	// Constructor
 	CScene3D(void);
 	// Destructor

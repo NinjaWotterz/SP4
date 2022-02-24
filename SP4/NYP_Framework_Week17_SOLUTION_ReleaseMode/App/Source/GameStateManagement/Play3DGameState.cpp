@@ -21,8 +21,8 @@ using namespace std;
 /**
  @brief Constructor
  */
-CPlay3DGameState::CPlay3DGameState(void)
-	: CScene3D(NULL)
+CPlay3DGameState::CPlay3DGameState(std::string stateGameLevel)
+	: CScene3D(NULL), gameLevel(stateGameLevel)
 {
 
 }
@@ -44,9 +44,9 @@ bool CPlay3DGameState::Init(void)
 
 	// Initialise the CScene3D instance
 	CScene3D = CScene3D::GetInstance();
-	if (CScene3D->Init() == false)
+	if (CScene3D->Init(gameLevel) == false)
 	{
-		cout << "Failed to load Scene2D" << endl;
+		cout << "Failed to load Scene3D" << endl;
 		return false;
 	}
 

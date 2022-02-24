@@ -30,6 +30,7 @@
 #include "WeaponInfo\Sniper.h"
 
 // Include CRock3D
+#include "Entities/PatrolEnemy.h"
 #include "Entities/Rock3D.h"
 #include "Entities/Mossrock.h"
 #include "Entities/Target3D.h"
@@ -48,14 +49,16 @@
 #include "Entities/Hut_Concrete.h"
 #include "Entities/Platform3D.h"
 
-// Include CCameraShake
+// Include Enemies
+#include "Entities/Zombie3D.h"
+#include "Entities/Statue3D.h"
+#include "Entities/Ghost3D.h"
+
+//Include CCameraShake
 #include "CameraEffects/CameraShake.h"
 #include "CameraEffects/CameraRecoil.h"
 
-// SM
-//#include "StateChaser.h"
-//#include "PostOffice.h"
-//#include "ConcreteMessages.h"
+#include "../Application.h"
 
 #include <iostream>
 using namespace std;
@@ -163,14 +166,15 @@ CScene3D::~CScene3D(void)
  @brief Init Initialise this instance
  @return true if the initialisation is successful, else false
  */
-bool CScene3D::Init(void)
+bool CScene3D::Init(std::string initGameLevel)
 {
+	gameLevel = initGameLevel;
 	cSettings = CSettings::GetInstance();
 	CSceneGraph::GetInstance()->Init();
 	// configure global opengl state
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	minimapZoom = 60.f;
+	minimapZoom = 25.f;
 	// Configure the camera
 	cCamera = CCamera::GetInstance();
 	cCamera->vec3Position = glm::vec3(0.0f, 0.5f, 3.0f);
@@ -209,7 +213,7 @@ bool CScene3D::Init(void)
 	// Load the Ground
 	cTerrain = CTerrain::GetInstance();
 	cTerrain->SetShader("Shader3D_Terrain");
-	cTerrain->Init();
+	cTerrain->Init(gameLevel);
 	// Set the size of the Terrain
 	cTerrain->SetRenderSize(100.0f, 15.0f, 100.0f);
 
@@ -268,38 +272,61 @@ bool CScene3D::Init(void)
 	cPlayer3D->SetWeapon(2, cSniper);
 
 	// Initialise the cEnemy3D
-	float fCheckHeight = cTerrain->GetHeight(0.0f, -10.0f);
+	/*float fCheckHeight = cTerrain->GetHeight(0.0f, -10.0f);*/
 
-	for (int i = 0; i < 10; ++i) {
-		CEnemy3D* cEnemy3D = new CEnemy3D();
-		cEnemy3D->SetShader("Shader3D");
-		cEnemy3D->Init();
-		
-		cEnemy3D->InitCollider("Shader3D_Line", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	//for (int i = 0; i < 10;) {
+	//	CPatrolEnemy3D* cEnemy3D = new CPatrolEnemy3D();
+	//	float xPositive = ((rand() % 100) < 50) ? -1 : 1;
+	//	float zPositive = ((rand() % 100) < 50) ? -1 : 1;
+	//	float eXPos = xPositive * (rand() % 45);
+	//	float eZPos = zPositive * (rand() % 45);
+	//	float eYPos = cTerrain->GetHeight(eXPos, eZPos)+0.5f;
+	//	glm::vec3 eSpawnPos = glm::vec3(eXPos, eYPos, eZPos);
+	//	if (cTerrain->IsInWall(eSpawnPos)) {
+	//		continue;
+	//	}
+	//	cEnemy3D->SetPosition(eSpawnPos);
+	//	cEnemy3D->SetShader("Shader3D");
+	//	cEnemy3D->Init();
+	//	
+	//	cEnemy3D->InitCollider("Shader3D_Line", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
-		// Assign a cPistol to the cEnemy3D
-		CPistol* cEnemyPistol = new CPistol();
-		cEnemyPistol->SetScale(glm::vec3(1.75f, 1.75f, 1.75f));
-		// Initialise the instance
-		cEnemyPistol->Init();
-		cEnemyPistol->SetShader("Shader3D_Model");
-		cEnemy3D->SetWeapon(0, cEnemyPistol);
-		cEnemy3D->SetStatus(false);
+	//	// Assign a cPistol to the cEnemy3D
+	//	CPistol* cEnemyPistol = new CPistol();
+	//	cEnemyPistol->SetScale(glm::vec3(1.75f, 1.75f, 1.75f));
+	//	// Initialise the instance
+	//	cEnemyPistol->Init();
+	//	cEnemyPistol->SetShader("Shader3D_Model");
+	//	cEnemy3D->SetWeapon(0, cEnemyPistol);
+	//	cEnemy3D->SetStatus(true);
 
-		// Add the cEnemy3D to the cSolidObjectManager
-		cSolidObjectManager->Add(cEnemy3D);
-		enemyList.push_back(cEnemy3D);
+	//	// Add the cEnemy3D to the cSolidObjectManager
+	//	cSolidObjectManager->Add(cEnemy3D);
+	//	++i;
+	//	//enemyList.push_back(cEnemy3D);
+	//}
+
+	for (int i = 0; i < 5;) {
+		float xPositive = ((rand() % 100) < 50) ? -1 : 1;
+		float zPositive = ((rand() % 100) < 50) ? -1 : 1;
+		float eXPos = xPositive * (rand() % 45);
+		float eZPos = zPositive * (rand() % 45);
+		float eYPos = cTerrain->GetHeight(eXPos, eZPos)+0.5f;
+		glm::vec3 eSpawnPos = glm::vec3(eXPos, eYPos, eZPos);
+		if (cTerrain->IsInWall(eSpawnPos)) {
+			continue;
+		}
+		CItem3D* itemCrystal = new CItem3D(eSpawnPos);
+		itemCrystal->SetShader("Shader3D");
+		itemCrystal->SetItemType(CItem3D::ITEMTYPE::CRYSTAL);
+		itemCrystal->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+		itemCrystal->Init();
+		itemCrystal->InitCollider("Shader3D_Line", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+		itemCrystal->SetStatus(true);
+		cSolidObjectManager->Add(itemCrystal);
+		itemList.push_back(itemCrystal);
+		++i;
 	}
-
-	CItem3D* itemCrystal = new CItem3D(glm::vec3(-41.81, 14.6, 50.9));
-	itemCrystal->SetShader("Shader3D");
-	itemCrystal->SetItemType(CItem3D::ITEMTYPE::CRYSTAL);
-	itemCrystal->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-	itemCrystal->Init();
-	itemCrystal->InitCollider("Shader3D_Line", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	itemCrystal->SetStatus(false);
-	cSolidObjectManager->Add(itemCrystal);
-	itemList.push_back(itemCrystal);
 
 	// Spawning all the obstacles required for platformer tower
 	CFlyingObstacle* cFlyingObs = SpawnFlyingObstacle(glm::vec3(-52, 14.6, 26.8), CFlyingObstacle::PATROLMOVEMENT::PATROLXZ);
@@ -331,6 +358,122 @@ bool CScene3D::Init(void)
 	// Initialise the CEntityManager
 	cEntityManager = CEntityManager::GetInstance();
 	cEntityManager->Init();
+
+	//Zombie 
+	float fCheckHeight = cTerrain->GetHeight(-2.56f, 26.f);
+	CZombie3D* cZombie3D1 = new CZombie3D(glm::vec3(-2.56f, fCheckHeight, 26.f));
+	cZombie3D1->SetScale(glm::vec3(0.1f));
+	cZombie3D1->SetMovementSpeed(4.0f);
+	cZombie3D1->SetShader("Shader3D");
+	cZombie3D1->Init();
+	cZombie3D1->InitCollider("Shader3D_Line", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cZombie3D1);
+
+	fCheckHeight = cTerrain->GetHeight(-21.7f, 37.5f);
+	CZombie3D* cZombie3D2 = new CZombie3D(glm::vec3(-21.7f, fCheckHeight, 37.5f));
+	cZombie3D2->SetScale(glm::vec3(0.1f));
+	cZombie3D2->SetMovementSpeed(4.0f);
+	cZombie3D2->SetShader("Shader3D");
+	cZombie3D2->Init();
+	cZombie3D2->InitCollider("Shader3D_Line", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cZombie3D2);
+
+	fCheckHeight = cTerrain->GetHeight(35.9f, 28.8f);
+
+	CZombie3D* cZombie3D3 = new CZombie3D(glm::vec3(35.9f, fCheckHeight, 28.8f));
+	cZombie3D3->SetScale(glm::vec3(0.1f));
+	cZombie3D3->SetMovementSpeed(4.0f);
+	cZombie3D3->SetShader("Shader3D");
+	cZombie3D3->Init();
+	cZombie3D3->InitCollider("Shader3D_Line", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cZombie3D3);
+
+	//Ghost
+	fCheckHeight = cTerrain->GetHeight(-15.f, 28.7f);
+	CGhost3D* cGhost3D1 = new CGhost3D(glm::vec3(-15.f, fCheckHeight, 28.7f));
+	cGhost3D1->SetScale(glm::vec3(0.80f));
+	cGhost3D1->SetShader("Shader3D");
+	cGhost3D1->Init();
+	cGhost3D1->InitCollider("Shader3D_Line");
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cGhost3D1);
+
+	fCheckHeight = cTerrain->GetHeight(3.5f, 37.7f);
+	CGhost3D* cGhost3D2 = new CGhost3D(glm::vec3(3.5f, fCheckHeight, 37.7f));
+	cGhost3D2->SetScale(glm::vec3(0.80f));
+	cGhost3D2->SetShader("Shader3D");
+	cGhost3D2->Init();
+	cGhost3D2->InitCollider("Shader3D_Line");
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cGhost3D2);
+
+	fCheckHeight = cTerrain->GetHeight(41.7f, -2.2f);
+	CGhost3D* cGhost3D3 = new CGhost3D(glm::vec3(41.7f, fCheckHeight, -2.2f));
+	cGhost3D3->SetScale(glm::vec3(0.80f));
+	cGhost3D3->SetShader("Shader3D");
+	cGhost3D3->Init();
+	cGhost3D3->InitCollider("Shader3D_Line");
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cGhost3D3);
+
+
+	//Statue
+	fCheckHeight = cTerrain->GetHeight(9.4f, 14.4f);
+	CStatue3D* cStatue3D1 = new CStatue3D(glm::vec3(9.4f, fCheckHeight, 14.4f));
+	cStatue3D1->SetScale(glm::vec3(0.15f));
+	cStatue3D1->SetShader("Shader3D");
+	cStatue3D1->Init();
+	cStatue3D1->InitCollider("Shader3D_Line");
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cStatue3D1);
+
+	fCheckHeight = cTerrain->GetHeight(2.67f, 28.8f);
+	CStatue3D* cStatue3D2 = new CStatue3D(glm::vec3(2.67f, fCheckHeight, 28.8f));
+	cStatue3D2->SetScale(glm::vec3(0.15f));
+	cStatue3D2->SetShader("Shader3D");
+	cStatue3D2->Init();
+	cStatue3D2->InitCollider("Shader3D_Line");
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cStatue3D2);
+
+	fCheckHeight = cTerrain->GetHeight(30.9f, 40.9f);
+	CStatue3D* cStatue3D3 = new CStatue3D(glm::vec3(30.9f, fCheckHeight, 40.9f));
+	cStatue3D3->SetScale(glm::vec3(0.15f));
+	cStatue3D3->SetShader("Shader3D");
+	cStatue3D3->Init();
+	cStatue3D3->InitCollider("Shader3D_Line");
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cStatue3D3);
+
+	fCheckHeight = cTerrain->GetHeight(14.8f, -25.8f);
+	CStatue3D* cStatue3D4 = new CStatue3D(glm::vec3(14.8f, fCheckHeight, -25.8f));
+	cStatue3D4->SetScale(glm::vec3(0.15f));
+	cStatue3D4->SetShader("Shader3D");
+	cStatue3D4->Init();
+	cStatue3D4->InitCollider("Shader3D_Line");
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cStatue3D4);
+
+	fCheckHeight = cTerrain->GetHeight(-2.7f, -11.9f);
+	CStatue3D* cStatue3D5 = new CStatue3D(glm::vec3(-2.7f, fCheckHeight, -11.9f));
+	cStatue3D5->SetScale(glm::vec3(0.15f));
+	cStatue3D5->SetShader("Shader3D");
+	cStatue3D5->Init();
+	cStatue3D5->InitCollider("Shader3D_Line");
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cStatue3D5);
+
+	fCheckHeight = cTerrain->GetHeight(-38.28f, -35.6f);
+	CStatue3D* cStatue3D6 = new CStatue3D(glm::vec3(-38.28f, fCheckHeight, -35.6f));
+	cStatue3D6->SetScale(glm::vec3(0.15f));
+	cStatue3D6->SetShader("Shader3D");
+	cStatue3D6->Init();
+	cStatue3D6->InitCollider("Shader3D_Line");
+	// Add the cEnemy3D to the cSolidObjectManager
+	cSolidObjectManager->Add(cStatue3D6);
 
 	// Initialise the CRock3D
 	//CRock3D* cRock3D = new CRock3D();
@@ -445,7 +588,7 @@ bool CScene3D::Init(void)
 		cWalls3D->SetNumOfInstance(cTerrain->GetTotalWalls());
 		cWalls3D->SetSpreadDistance(100.0f);
 
-		cWalls3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+		cWalls3D->SetShader("Shader3D_ShadowInstance");	// FOR INSTANCED RENDERING
 	}
 	if (cWalls3D->Init() == true)
 	{
@@ -464,7 +607,7 @@ bool CScene3D::Init(void)
 		cCeiling3D->SetNumOfInstance(cTerrain->GetTotalWalls());
 		cCeiling3D->SetSpreadDistance(100.0f);
 
-		cCeiling3D->SetShader("Shader3D_3DTree");	// FOR INSTANCED RENDERING
+		cCeiling3D->SetShader("Shader3D_ShadowInstance");	// FOR INSTANCED RENDERING
 	}
 	if (cCeiling3D->Init() == true)
 	{
@@ -485,15 +628,14 @@ bool CScene3D::Init(void)
 
 	
 	// Initialise a CHut_Concrete
-	//fCheckHeight = cTerrain->GetHeight(-2.0f, 2.0f);
-	//CHut_Concrete* cHut_Concrete = new CHut_Concrete(glm::vec3(-2.0f, fCheckHeight, 2.0f));
-	//cHut_Concrete->SetShader("Shader3DNoColour");
-	//cHut_Concrete->SetLODStatus(true);
-	//cHut_Concrete->Init();
-	//cHut_Concrete->InitCollider("Shader3D_Line", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
-	//// Add the cHut_Concrete to the cSolidObjectManager
-	//cSolidObjectManager->Add(cHut_Concrete);
+	CHut_Concrete* cHut_Concrete = new CHut_Concrete(glm::vec3(3.f, cTerrain->GetHeight(3.f, 12.f), 12.f));
+	cHut_Concrete->SetShader("Shader3DNoColour");
+	cHut_Concrete->SetLODStatus(true);
+	cHut_Concrete->Init();
+	cHut_Concrete->InitCollider("Shader3D_Line", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	cHut_Concrete->nextLevelState = "Play3DLevel2";
+	// Add the cHut_Concrete to the cSolidObjectManager
+	cSolidObjectManager->Add(cHut_Concrete);
 
 	return true;
 }
@@ -541,6 +683,7 @@ void CScene3D::SpawnTower() {
 	// Add the cStructure3D to the cSolidObjectManager
 	cSolidObjectManager->Add(targetShootingPoint);
 	cTriggerPointsList.push_back(targetShootingPoint);
+
 }
 
 CFlyingObstacle* CScene3D::SpawnFlyingObstacle(glm::vec3 pos, CFlyingObstacle::PATROLMOVEMENT pm) {
@@ -564,44 +707,170 @@ bool CScene3D::Update(const double dElapsedTime)
 {
 	// Store the current position, if rollback is needed.
 	cPlayer3D->StorePositionForRollback();
-	bool playerMoved = false;
+	static bool playerMoved = false;
+	static bool up = false;
+	static bool down = false;
+	static bool left = false;
+	static bool right = false;
+	static bool cameraLeft = false;
+	static bool cameraRight = false;
+	static bool camera180 = false;
+	static bool sprint = false;
+	float sprintspeed = 2.0f;
+	float addonspeed = 1.0f;
 	// Get keyboard updates for player3D
-	if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_W))
+	if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_LEFT_SHIFT))
+	{
+		CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+		CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+		if (cInventoryItem->GetCount() > 0)
+		{
+			addonspeed = sprintspeed;
+			sprint = true;
+		}
+	}
+	else if (!CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_LEFT_SHIFT))
+	{
+		sprint = false;
+		CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+		CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+		cInventoryItem->Add(1);
+	}
+	if (!down && !left && !right && CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_W))
 	{
 		playerMoved = true;
-		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::FORWARD, (float)dElapsedTime);
+		up = true;
+		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::FORWARD, (float)dElapsedTime * addonspeed);
 		((CCameraShake*)CCameraEffectsManager::GetInstance()->Get("CameraShake"))->bToBeUpdated = true;
+		if (sprint == true)
+		{
+			CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+			CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
+		}
 	}
-	else if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_S))
+	else if (!up && !left && !right && CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_S))
 	{
 		playerMoved = true;
-		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::BACKWARD, (float)dElapsedTime);
+		down = true;
+		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::BACKWARD, (float)dElapsedTime * addonspeed);
 		((CCameraShake*)CCameraEffectsManager::GetInstance()->Get("CameraShake"))->bToBeUpdated = true;
+		if (sprint == true)
+		{
+			CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+			CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
+		}
 	}
-	if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_A))
+	else if (!up && !down && !right && CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_A))
 	{
 		playerMoved = true;
-		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::LEFT, (float)dElapsedTime);
+		left = true;
+		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::LEFT, (float)dElapsedTime * (addonspeed / 2));
+		((CCameraShake*)CCameraEffectsManager::GetInstance()->Get("CameraShake"))->bToBeUpdated = true;
+		if (sprint == true)
+		{
+			CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+			CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
+		}
 	}
-	else if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_D))
+	else if (!up && !down && !left && CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_D))
 	{
 		playerMoved = true;
-		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::RIGHT, (float)dElapsedTime);
+		right = true;
+		cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::RIGHT, (float)dElapsedTime * (addonspeed / 2));
+		((CCameraShake*)CCameraEffectsManager::GetInstance()->Get("CameraShake"))->bToBeUpdated = true;
+		if (sprint == true)
+		{
+			CInventoryManager* cInventoryManager = CInventoryManager::GetInstance();
+			CInventoryItem* cInventoryItem = cInventoryManager->GetItem("Stamina");
+			cInventoryItem->Remove(1);
+		}
+	}
+	if (playerMoved == false)
+	{
+		if (CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_Q))
+		{
+			playerMoved = true;
+			cameraLeft = true;
+		}
+		else if (CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_E))
+		{
+			playerMoved = true;
+			cameraRight = true;
+		}
+		else if (CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_SPACE))
+		{
+			playerMoved = true;
+			camera180 = true;
+		}
 	}
 
-	if (playerMoved) {
+	if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_F)) {
+		minimapZoom = 60.f;
+	}
+	else {
+		minimapZoom = 25.f;
+	}
+
+	/*if (playerMoved) {
 		minimapZoom += dElapsedTime * 20;
 	}
 	else {
 		minimapZoom -= dElapsedTime * 20;
 	}
 
-	if (minimapZoom > 100.f) {
-		minimapZoom = 100.f;
+	if (minimapZoom > 60.f) {
+		minimapZoom = 60.f;
 	}
 	if (minimapZoom < 45.f) {
 		minimapZoom = 45.f;
+	}*/
+
+	if (playerMoved == true)
+	{
+		if (up && !CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_W))
+		{
+			playerMoved = false;
+			up = false;
+		}
+		else if (down && !CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_S))
+		{
+			playerMoved = false;
+			down = false;
+		}
+		else if (left && !CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_A))
+		{
+			playerMoved = false;
+			left = false;
+		}
+		else if (right && !CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_D))
+		{
+			playerMoved = false;
+			right = false;
+		}
+		else if (cameraLeft && !CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_Q))
+		{
+			playerMoved = false;
+			cameraLeft = false;
+			cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::CAMERALEFT, (float)dElapsedTime);
+		}
+		else if (cameraRight && !CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_E))
+		{
+			playerMoved = false;
+			cameraRight = false;
+			cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::CAMERARIGHT, (float)dElapsedTime);
+		}
+		else if (camera180 && !CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_SPACE))
+		{
+			playerMoved = false;
+			camera180 = false;
+			cPlayer3D->ProcessMovement(CPlayer3D::PLAYERMOVEMENT::CAMERA180, (float)dElapsedTime);
+		}
 	}
+
+
 
 	float arrowScale = 3.f * minimapZoom / 45.f;
 	cPlayer3D->GetArrow()->SetScale(glm::vec3(arrowScale));
@@ -657,14 +926,14 @@ bool CScene3D::Update(const double dElapsedTime)
 		//std::cout << "weapon pos: " << w->GetPosition().x << "," << w->GetPosition().y << "," << w->GetPosition().z << std::endl;
 	}
 
-	if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_SPACE))) // Button 0 is the A button on the GamePad
+	/*if ((CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_SPACE))) // Button 0 is the A button on the GamePad
 	{
 		if (cPlayer3D->GetCrouch() == false)
 		{
 			cPlayer3D->SetToJump();
 			cSoundController->PlaySoundByID(3);
 		}
-	}
+	}*/
 
 	//cTriggerPointsList
 	list<CStructure3D*>::iterator it, end;
@@ -728,7 +997,7 @@ bool CScene3D::Update(const double dElapsedTime)
 						}
 					}
 
-					
+
 				}
 			}
 		}
@@ -744,7 +1013,7 @@ bool CScene3D::Update(const double dElapsedTime)
 			glm::vec3 spawnPoint = tower->GetPosition();
 			float xPositive = ((rand() % 100) < 50) ? -1 : 1;
 			float zPositive = ((rand() % 100) < 50) ? -1 : 1;
-			spawnPoint += glm::vec3(xPositive*(3.f + rand() % 20), 0.f, zPositive*(3.f + rand() % 20));
+			spawnPoint += glm::vec3(xPositive * (3.f + rand() % 20), 0.f, zPositive * (3.f + rand() % 20));
 			float fCheckHeight = cTerrain->GetHeight(0.0f, -10.0f);
 			for (auto enemy : enemyList) {
 				if (!enemy->GetStatus()) {
@@ -755,7 +1024,7 @@ bool CScene3D::Update(const double dElapsedTime)
 					break;
 				}
 			}
-			
+
 		}
 		else if (cGUI_Scene3D->GetEventRunning() == CStructure3D::EVENT_TRIGGER::PLATFORMER) {
 			if (cPlayer3D->GetPosition().y <= 5.f) {
@@ -773,7 +1042,7 @@ bool CScene3D::Update(const double dElapsedTime)
 		}
 	}
 
-	if (cCamera->GetZoomState() == false)
+	/*if (cCamera->GetZoomState() == false)
 	{
 		if (cPlayer3D->IsCameraAttached() == true)
 		{
@@ -784,10 +1053,10 @@ bool CScene3D::Update(const double dElapsedTime)
 				//return;
 			}
 		}
-	}
+	}*/
 
 	// Get keyboard updates for camera
-	if (!cPlayer3D->IsCameraAttached())
+	/*if (!cPlayer3D->IsCameraAttached())
 	{
 		if (CKeyboardController::GetInstance()->IsKeyDown(GLFW_KEY_I))
 			cCamera->ProcessKeyboard(CCamera::CAMERAMOVEMENT::FORWARD, (float)dElapsedTime);
@@ -807,7 +1076,7 @@ bool CScene3D::Update(const double dElapsedTime)
 		// Get mouse updates
 		cPlayer3D->ProcessRotate((float)cMouseController->GetMouseDeltaX(), (float)cMouseController->GetMouseDeltaY());
 		cCamera->ProcessMouseScroll((float)cMouseController->GetMouseScrollStatus(CMouseController::SCROLL_TYPE::SCROLL_TYPE_YOFFSET));
-	}
+	}*/
 
 	if (CKeyboardController::GetInstance()->IsKeyPressed(GLFW_KEY_0))
 	{
@@ -935,6 +1204,140 @@ void CScene3D::PreRender(void)
 	// Clear the screen and buffer
 	glClearColor(0.0f, 0.1f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+}
+
+void CScene3D::RenderPassGPass()
+{
+	m_renderPass = RENDER_PASS_PRE;
+	m_lightDepthFBO.BindForWriting();
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	CShaderManager::GetInstance()->Use("Shader3D_GPass");
+
+	//These matrices should change when light position or direction changes
+	if (lights[0].type == Light::LIGHT_DIRECTIONAL)
+		m_lightDepthProj = glm::ortho(-1000, 1000, -1000, 1000, -1000, 2000);
+	else
+		m_lightDepthProj = glm::perspective(90.f, 1.f, 0.1f, 200.f);
+	m_lightDepthView = glm::lookAt(lights[0].position, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	RenderWorld();
+}
+
+void CScene3D::RenderPassMain()
+{
+	m_renderPass = RENDER_PASS_MAIN;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, Application::GetInstance()->GetWindowWidth(), Application::GetInstance()->GetWindowHeight());
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	CShaderManager::GetInstance()->Use("Shader3D_Shadow");
+
+	m_lightDepthFBO.BindForReading(GL_TEXTURE8);
+	glUniform1i(m_parameters[U_SHADOW_MAP], 8);
+
+	glm::mat4 perspective = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	//perspective.SetToOrtho(-80, 80, -60, 60, -1000, 1000);
+	projectionStack.LoadMatrix(perspective);
+
+	// Camera matrix
+	viewStack.LoadIdentity();
+	viewStack.LookAt(cCamera->vec3Position, cCamera->vec3Front, cCamera->vec3Front);
+
+	
+	// Model matrix : an identity matrix (model will be at the origin)
+	modelStack.LoadIdentity();
+
+	if (lights[0].type == Light::LIGHT_DIRECTIONAL)
+	{
+		glm::vec4 lightDir(lights[0].position.x, lights[0].position.y, lights[0].position.z, 1.f);
+		glm::vec4 lightDirection_cameraspace = viewStack.Top() * lightDir;
+		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
+	}
+	else if (lights[0].type == Light::LIGHT_SPOT)
+	{
+		glm::vec4 lightPosition_cameraspace = viewStack.Top() * glm::vec4(lights[0].position, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+		glm::vec4 spotDirection_cameraspace = viewStack.Top() * glm::vec4(lights[0].spotDirection, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT0_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
+	}
+	else
+	{
+		glm::vec4 lightPosition_cameraspace = viewStack.Top() * glm::vec4(lights[0].position, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+	}
+	if (lights[1].type == Light::LIGHT_DIRECTIONAL)
+	{
+		glm::vec4 lightDir(lights[1].position.x, lights[1].position.y, lights[1].position.z, 1.f);
+		glm::vec4 lightDirection_cameraspace = viewStack.Top() * lightDir;
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightDirection_cameraspace.x);
+	}
+	else if (lights[1].type == Light::LIGHT_SPOT)
+	{
+		glm::vec4 lightPosition_cameraspace = viewStack.Top() * glm::vec4(lights[1].position, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
+		glm::vec4 spotDirection_cameraspace = viewStack.Top() * glm::vec4(lights[1].spotDirection, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT1_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
+	}
+	else
+	{
+		glm::vec4 lightPosition_cameraspace = viewStack.Top() * glm::vec4(lights[1].position, 1.f);
+		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
+	}
+
+	//RenderMesh(meshList[GEO_AXES], false);
+
+	//RenderSkyPlane(meshList[GEO_SKYPLANE], Color(0, 1, 1), 100, 5, 5, 10, 10);
+
+	RenderWorld();
+}
+
+void CScene3D::RenderWorld(){
+	// Part 2: Render the entire scene as per normal
+		// Get the camera view and projection
+	glm::mat4 view = CCamera::GetInstance()->GetViewMatrix();;
+	glm::mat4 projection = glm::perspective(glm::radians(CCamera::GetInstance()->fZoom),
+		(float)cSettings->iWindowWidth / (float)cSettings->iWindowHeight,
+		0.1f, 1000.0f);
+	glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glDepthFunc(GL_LEQUAL);
+
+	// Render the SkyBox
+	cSkyBox->SetView(view);
+	cSkyBox->SetProjection(projection);
+	cSkyBox->PreRender();
+	cSkyBox->Render();
+	cSkyBox->PostRender();
+
+	// Render the Terrain
+	cTerrain->SetView(view);
+	cTerrain->SetProjection(projection);
+	cTerrain->PreRender();
+	cTerrain->Render();
+	cTerrain->PostRender();
+
+	// Render the entities
+	cEntityManager->SetView(view);
+	cEntityManager->SetProjection(projection);
+	cEntityManager->Render();
+
+	// Render the solid objects
+	cSolidObjectManager->SetView(view);
+	cSolidObjectManager->SetProjection(projection);
+	cSolidObjectManager->Render();
+
+	// Render the projectiles
+	cProjectileManager->SetView(view);
+	cProjectileManager->SetProjection(projection);
+	cProjectileManager->PreRender();
+	cProjectileManager->Render();
+	cProjectileManager->PostRender();
 }
 
 /**
@@ -979,7 +1382,6 @@ void CScene3D::Render(void)
 		
 
 	glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
-
 	// Render the Terrain
 	cTerrain->SetView(playerView);
 	cTerrain->SetProjection(playerProjection);
@@ -992,12 +1394,12 @@ void CScene3D::Render(void)
 	cEntityManager->SetProjection(playerProjection);
 	cEntityManager->RenderMiniMap();
 
-	
+
 	// Render the entities for the minimap
 	cSolidObjectManager->SetView(playerView);
 	cSolidObjectManager->SetProjection(playerProjection);
-	cSolidObjectManager->Render();
-	
+	cSolidObjectManager->RenderMiniMap();
+
 	// Minimap Object Renderer
 	cPlayer3D->GetArrow()->SetView(playerView);
 	cPlayer3D->GetArrow()->SetProjection(playerProjection);
@@ -1007,47 +1409,28 @@ void CScene3D::Render(void)
 
 	// Deactivate the cMinimap so that we can render as per normal
 	CMinimap::GetInstance()->Deactivate();
-	
+
+
+
+
+	// Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS);
+
+	glEnable(GL_CULL_FACE);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	// Part 2: Render the entire scene as per normal
 	// Get the camera view and projection
 	glm::mat4 view = CCamera::GetInstance()->GetViewMatrix();;
 	glm::mat4 projection = glm::perspective(glm::radians(CCamera::GetInstance()->fZoom),
 		(float)cSettings->iWindowWidth / (float)cSettings->iWindowHeight,
 		0.1f, 1000.0f);
-	glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Render the SkyBox
-	cSkyBox->SetView(view);
-	cSkyBox->SetProjection(projection);
-	cSkyBox->PreRender();
-	cSkyBox->Render();
-	cSkyBox->PostRender();
-
-	// Render the Terrain
-	cTerrain->SetView(view);
-	cTerrain->SetProjection(projection);
-	cTerrain->PreRender();
-	cTerrain->Render();
-	cTerrain->PostRender();
-
-	// Render the entities
-	cEntityManager->SetView(view);
-	cEntityManager->SetProjection(projection);
-	cEntityManager->Render();
-
-	// Render the solid objects
-	cSolidObjectManager->SetView(view);
-	cSolidObjectManager->SetProjection(projection);
-	cSolidObjectManager->Render();
-	cSolidObjectManager->Render();
-
-	// Render the projectiles
-	cProjectileManager->SetView(view);
-	cProjectileManager->SetProjection(projection);
-	cProjectileManager->PreRender();
-	cProjectileManager->Render();
-	cProjectileManager->PostRender();
+	
+	RenderPassMain();
 
 	// now draw the mirror quad with screen texture
 	// --------------------------------------------

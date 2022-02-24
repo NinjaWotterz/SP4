@@ -16,6 +16,7 @@ smooth out vec2 vTexCoord;
 smooth out vec3 vNormal;
 smooth out vec3 vWorldPos;
 smooth out vec4 vEyeSpacePos;
+out vec3 vertexPosition_cameraspace;
 
 uniform mat4 HeightmapScaleMatrix;
 
@@ -26,6 +27,9 @@ void main()
     
   gl_Position = mMVP * inPositionScaled;
   vEyeSpacePos = matrices.viewMatrix * matrices.modelMatrix * vec4(inPosition, 1.0);
+
+	// Vector position, in camera space
+	vertexPosition_cameraspace = ( matrices.viewMatrix * matrices.modelMatrix * inPositionScaled ).xyz;
 
   vTexCoord = inCoord;
   vNormal = inNormal;

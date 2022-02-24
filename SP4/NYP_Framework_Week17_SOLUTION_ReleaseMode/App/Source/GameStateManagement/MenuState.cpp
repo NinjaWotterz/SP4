@@ -64,7 +64,7 @@ bool CMenuState::Init(void)
 	CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 	//Create Background Entity
-	background = new CBackgroundEntity("Image/MenuBackground.png");
+	background = new CBackgroundEntity("Image/Background/menuImage.png");
 	background->SetShader("2DShader");
 	background->Init();
 
@@ -87,10 +87,22 @@ bool CMenuState::Init(void)
 	startButtonData.fileName = "Image\\GUI\\PlayButton.png";
 	startButtonData.textureID = il->LoadTextureGetID(startButtonData.fileName.c_str(), false);
 
-	play3DButtonData.fileName = "Image\\GUI\\PlayButton_3D.png";
-	play3DButtonData.textureID = il->LoadTextureGetID(play3DButtonData.fileName.c_str(), false);
 
-	exitButtonData.fileName = "Image\\GUI\\ExitButton.png";
+	//Needed
+	//Play Game
+	play3DButtonData.fileName = "Image\\GUI\\buttonPlay.png";
+	play3DButtonData.textureID = il->LoadTextureGetID(play3DButtonData.fileName.c_str(), false);
+	//Setting
+	settingButtonData.fileName = "Image\\GUI\\buttonSetting.png";
+	settingButtonData.textureID = il->LoadTextureGetID(settingButtonData.fileName.c_str(), false);
+	//About
+	aboutButtondata.fileName = "Image\\GUI\\buttonAbout.png";
+	aboutButtondata.textureID = il->LoadTextureGetID(aboutButtondata.fileName.c_str(), false);
+	//Credit
+	creditButtondata.fileName = "Image\\GUI\\buttonCredit.png";
+	creditButtondata.textureID = il->LoadTextureGetID(creditButtondata.fileName.c_str(), false);
+	//Exit
+	exitButtonData.fileName = "Image\\GUI\\buttonExit.png";
 	exitButtonData.textureID = il->LoadTextureGetID(exitButtonData.fileName.c_str(), false);
 
 	// Enable the cursor
@@ -119,8 +131,8 @@ bool CMenuState::Update(const double dElapsedTime)
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoNav;
 
-	float buttonWidth = 256;
-	float buttonHeight = 128;
+	float buttonWidth = 180;
+	float buttonHeight = 90;
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{
@@ -129,25 +141,15 @@ bool CMenuState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
-			CSettings::GetInstance()->iWindowHeight/5.0));				// Set the top-left of the window at (10,10)
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/7.0 - buttonWidth/2.0, 
+			CSettings::GetInstance()->iWindowHeight/9.0));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.FrameRounding = 200.0f;
 		
-		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)startButtonData.textureID, 
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			// Reset the CKeyboardController
-			CKeyboardController::GetInstance()->Reset();
 
-			// Load the menu state
-			cout << "Loading PlayGameState" << endl;
-			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
-		}
 		// Add codes for Play3D button here
 		if (ImGui::ImageButton((ImTextureID)play3DButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
@@ -159,6 +161,41 @@ bool CMenuState::Update(const double dElapsedTime)
 			cout << "Loading Play3DGameState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("Play3DGameState");
 		}
+		// Add codes for setting button here
+		if (ImGui::ImageButton((ImTextureID)settingButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the setting state
+			cout << "Loading SettingState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("OptionState");
+
+		}
+		// Add codes for about button here
+		if (ImGui::ImageButton((ImTextureID)aboutButtondata.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the AboutState state
+			cout << "Loading AboutState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("AboutState");
+		}
+		// Add codes for credit button here
+		if (ImGui::ImageButton((ImTextureID)creditButtondata.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the credit state
+			cout << "Loading CreditState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("CreditState");
+		}
+
 		// Add codes for Exit button here
 		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
@@ -173,19 +210,7 @@ bool CMenuState::Update(const double dElapsedTime)
 		}
 		ImGui::End();
 	}
-
-	//For keyboard controls
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_SPACE))
-	{
-		// Reset the CKeyboardController
-		CKeyboardController::GetInstance()->Reset();
-
-		// Load the menu state
-		cout << "Loading PlayGameState" << endl;
-		CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
-		return true;
-	}
-	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ENTER))
+	 if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ENTER))
 	{
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();

@@ -12,9 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\GameStateManagement\AboutState.cpp" />
+    <ClCompile Include="Source\GameStateManagement\CreditState.cpp" />
     <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp" />
     <ClCompile Include="Source\GameStateManagement\IntroState.cpp" />
     <ClCompile Include="Source\GameStateManagement\MenuState.cpp" />
+    <ClCompile Include="Source\GameStateManagement\OptionState.cpp" />
     <ClCompile Include="Source\GameStateManagement\PauseState.cpp" />
     <ClCompile Include="Source\GameStateManagement\Play3DGameState.cpp" />
     <ClCompile Include="Source\GameStateManagement\PlayGameState.cpp" />
@@ -38,11 +41,13 @@
     <ClCompile Include="Source\Scene3D\CameraEffects\CameraShake.cpp" />
     <ClCompile Include="Source\Scene3D\CameraEffects\CrossHair.cpp" />
     <ClCompile Include="Source\Scene3D\CameraEffects\ScopeScreen.cpp" />
+    <ClCompile Include="Source\Scene3D\DepthFBO.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\ArrowMapIndicator.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Ceiling.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Enemy3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\EntityManager.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\FlyingObstacle.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Ghost3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Hut_Concrete.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Item3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Mossrock.cpp" />
@@ -52,13 +57,16 @@
     <ClCompile Include="Source\Scene3D\Entities\Rock3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\SolidObject.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\SolidObjectManager.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Statue3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Structure3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Target3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Tree3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\TreeKabak3D.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\Walls.cpp" />
     <ClCompile Include="Source\Scene3D\Entities\WoodenCrate3D.cpp" />
+    <ClCompile Include="Source\Scene3D\Entities\Zombie3D.cpp" />
     <ClCompile Include="Source\Scene3D\GUI_Scene3D.cpp" />
+    <ClCompile Include="Source\Scene3D\MatrixStack.cpp" />
     <ClCompile Include="Source\Scene3D\Minimap\Minimap.cpp" />
     <ClCompile Include="Source\Scene3D\Physics3D.cpp" />
     <ClCompile Include="Source\Scene3D\Scene3D.cpp" />
@@ -83,10 +91,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\GameStateManagement\AboutState.h" />
+    <ClInclude Include="Source\GameStateManagement\buttonData.h" />
+    <ClInclude Include="Source\GameStateManagement\CreditState.h" />
     <ClInclude Include="Source\GameStateManagement\GameStateBase.h" />
     <ClInclude Include="Source\GameStateManagement\GameStateManager.h" />
     <ClInclude Include="Source\GameStateManagement\IntroState.h" />
     <ClInclude Include="Source\GameStateManagement\MenuState.h" />
+    <ClInclude Include="Source\GameStateManagement\OptionState.h" />
     <ClInclude Include="Source\GameStateManagement\PauseState.h" />
     <ClInclude Include="Source\GameStateManagement\Play3DGameState.h" />
     <ClInclude Include="Source\GameStateManagement\PlayGameState.h" />
@@ -109,11 +121,13 @@
     <ClInclude Include="Source\Scene3D\CameraEffects\CameraShake.h" />
     <ClInclude Include="Source\Scene3D\CameraEffects\CrossHair.h" />
     <ClInclude Include="Source\Scene3D\CameraEffects\ScopeScreen.h" />
+    <ClInclude Include="Source\Scene3D\DepthFBO.h" />
     <ClInclude Include="Source\Scene3D\Entities\ArrowMapIndicator.h" />
     <ClInclude Include="Source\Scene3D\Entities\Ceiling.h" />
     <ClInclude Include="Source\Scene3D\Entities\Enemy3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\EntityManager.h" />
     <ClInclude Include="Source\Scene3D\Entities\FlyingObstacle.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Ghost3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\Hut_Concrete.h" />
     <ClInclude Include="Source\Scene3D\Entities\Item3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\Mossrock.h" />
@@ -123,13 +137,17 @@
     <ClInclude Include="Source\Scene3D\Entities\Rock3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\SolidObject.h" />
     <ClInclude Include="Source\Scene3D\Entities\SolidObjectManager.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Statue3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\Structure3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\Target3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\Tree3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\TreeKabak3D.h" />
     <ClInclude Include="Source\Scene3D\Entities\Walls.h" />
     <ClInclude Include="Source\Scene3D\Entities\WoodenCrate3D.h" />
+    <ClInclude Include="Source\Scene3D\Entities\Zombie3D.h" />
     <ClInclude Include="Source\Scene3D\GUI_Scene3D.h" />
+    <ClInclude Include="Source\Scene3D\Light.h" />
+    <ClInclude Include="Source\Scene3D\MatrixStack.h" />
     <ClInclude Include="Source\Scene3D\Minimap\Minimap.h" />
     <ClInclude Include="Source\Scene3D\Physics3D.h" />
     <ClInclude Include="Source\Scene3D\Scene3D.h" />

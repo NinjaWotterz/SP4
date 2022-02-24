@@ -42,7 +42,7 @@ public:
 	// Update this class instance
 	virtual bool Update(const double dElapsedTime);
 
-	void RenderMiniMap(void);
+	virtual void RenderMiniMap(void);
 	// Render this class instance
 	virtual void Render(void);
 

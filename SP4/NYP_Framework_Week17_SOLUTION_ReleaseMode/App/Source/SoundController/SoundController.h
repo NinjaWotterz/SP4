@@ -56,7 +56,15 @@ public:
 	// Set Listener direction
 	void SetListenerDirection(const float x, const float y, const float z);
 
+	float GetfCurrentVolume();
+	void SetfCurrentVolume(float volume);
+
+	bool GetMute();
+	void SetMute(bool muted);
 protected:
+
+	float fCurrentVolume;
+	bool mute;
 	// Constructor
 	CSoundController(void);
 
